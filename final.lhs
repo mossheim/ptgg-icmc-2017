@@ -11,8 +11,7 @@ blh33
 CPSC 431/531 Final Project
 Application of musical grammars (PTGG) to rhythm.
 
-===================
-basic definitions:
+===========DEFINITIONS===========
 
 Maximum power of two used as a subdivision (i.e. maxPoT = 4 => 1/(2^4) = 1/16 is smallest unit in a measure)
 
@@ -27,14 +26,14 @@ The main symbol is `Beat`, which is any even subdivision of a measure (half, qua
 
 > allRTerms = [Measure, Beat, Dotted, Short]
 
-===================
-parameters
+===========PARAMETER DEFINITIONS===========
 
 Three parameters:
   power and ratio: the duration of the beat is 1/2^power*ratio. Ratio is usually 1, unless the
     Beat is within a tuplet in which case it becomes <written number of beats in tuplet>/<actual duration of tuplet>
     Thus a triplet has ratio 2/3, a quintuplet ratio 4/5
-  measures: determines the length of a Measure object during the initial phase of generation and is not used for any final calculations (should always end up =1)
+  measures: determines the length of a Measure object during the initial phase of generation and is not used for any
+  final calculations (should always end up =1)
 
 > data Param = Param {power :: Int, measures :: Int, ratio :: Rational}
 >     deriving (Eq, Show)
