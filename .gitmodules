@@ -1,0 +1,3 @@
+[submodule "kulitta"]
+	path = kulitta
+	url = https://github.com/donya/Kulitta.git

@@ -1,6 +1,6 @@
 > module Final where
 > import Euterpea
-> import PTGG
+> import Kulitta.PTGG
 > import System.Random
 > import Data.List
 > import Data.Fixed
@@ -35,7 +35,7 @@ Three parameters:
 		Beat is within a tuplet in which case it becomes <written number of beats in tuplet>/<actual duration of tuplet>
 		Thus a triplet has ratio 2/3, a quintuplet ratio 4/5
 	measures: determines the length of a Measure object during the initial phase of generation and is not used for any final calculations (should always end up =1)
-	
+
 > data Param = Param {power :: Int, measures :: Int, ratio :: Rational}
 >     deriving (Eq, Show)
 
@@ -83,7 +83,7 @@ duration <Beat's duration>/<sum of the list>. In this way, any arbitrary tuplet 
 and concisely written without specifying anything other than the durations of its components. For example,
 subdivN p [1,1] divides a beat in half; subdivN p [1,1,1] divides it into a triplet; subdivN p [2,3] makes a quintuplet
 with the first note 2/5 the duration of the Beat and the second note 3/5 the duration. Any subdivisions which would result
-in a written note smaller than the maxPoT will return (Beat, p). However, actual durations smaller than 1/2^maxPoT (for 
+in a written note smaller than the maxPoT will return (Beat, p). However, actual durations smaller than 1/2^maxPoT (for
 example, triplet 16ths) may result.
 
 > subdivN :: Param -> [Int] -> [Term RTerm Param]
@@ -111,9 +111,9 @@ The rules for "measure generation" determine what measures will be tied together
 Rules for rhythmic subdivision.
 
 > rRules :: Bool -> [Rule RTerm Param]
-> rRules useLets = normalize ([ 
+> rRules useLets = normalize ([
 >		(Measure, 1.0) :-> \p -> [NT (Beat, p)],
->       --modes of subdividing beats: 
+>       --modes of subdividing beats:
 > 		--unchanged
 >       (Beat, 0.2) :-> \p -> [NT (Beat, p)],
 >       --half and half
@@ -138,7 +138,7 @@ Rules for rhythmic subdivision.
 >       letRules = [
 >           --let rules are [x=1,x=1], [x=1,2,x=1], [x=1,x=1,x=1] ~ symmetric halves, thirds, and syncopation with symmetric bookends
 >			(Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
->			(Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else 
+>			(Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
 >				[Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", NT(Short, half p), Var "x"]],
 >			(Beat, 0.05) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
 >				[Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", Var "x", Var "x", Var "x"]],
@@ -166,7 +166,7 @@ mGen / rGen no longer used
 
 > transform :: [(RTerm, Param)] -> Music Pitch
 > transform [] = rest 0
-> transform xs = 
+> transform xs =
 >     let f (t, Param pow _ r) = note (0.5^pow*(modifier t)*r) (pitch 60) where
 >         modifier x = case x of
 >              Dotted -> 1.5
@@ -194,9 +194,9 @@ Generation experiments: playing around with updateProbs
 
 > probs n g = map (\x -> (fromIntegral (x `mod` 1000) / 1000)^4) $ take n $ list n g where
 >                 list 0 _ = []
->                 list x g = let (a,s) = next g in a : list (x-1) s 
+>                 list x g = let (a,s) = next g in a : list (x-1) s
 
-> randomRules s = let rs = rRules True 
+> randomRules s = let rs = rRules True
 >                     ps = probs (length rs) (mkStdGen s) in
 >                 normalize $ updateProbs rs ps
 
@@ -217,6 +217,6 @@ Attempt at a cleaner list presentation (doesn't work especially well, would be n
 > present [] = "";
 > present ((t, p):xs) = f t p ++ "  " ++ present xs where
 >                           f t p = show $ 2^(maxPoT-power p)*l*(ratio p)
->                           l = case t of 
+>                           l = case t of
 >                               Dotted -> 1.5
 >                               _ -> 1.0
