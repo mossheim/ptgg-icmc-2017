@@ -227,7 +227,6 @@ Generation experiments: playing around with updateProbs
 
 > showRules :: [Rule RTerm Param] -> String
 > showRules [] = ""
-> showRules [r] = show (round $ (*1000) $ prob r)
 > showRules (r:rs) = show (round $ (*1000) $ prob r) ++ delim rs "," ++ showRules rs where
 
 > delim :: [a] -> String -> String
