@@ -228,7 +228,11 @@ Generation experiments: playing around with updateProbs
 > showRules :: [Rule RTerm Param] -> String
 > showRules [] = ""
 > showRules [r] = show (round $ (*1000) $ prob r)
-> showRules (r:rs) = show (round $ (*1000) $ prob r) ++ "," ++ showRules rs
+> showRules (r:rs) = show (round $ (*1000) $ prob r) ++ delim rs "," ++ showRules rs where
+
+> delim :: [a] -> String -> String
+> delim [] s = ""
+> delim _ s = s
 
 This is the most convenient method to use here: s1 and s2 are the seeds for rules and generation respectively.
 i, m, and p are the index, length in measures, and Let-probability during measure gen
@@ -240,12 +244,9 @@ Attempt at a cleaner list presentation (doesn't work especially well, would be n
 
 > present :: [(RTerm, Param)] -> String
 > present [] = "";
-> present ((t, p):xs) = f t p ++ delim ++ present xs where
+> present ((t, p):xs) = f t p ++ delim xs "  " ++ present xs where
 >                           f t p = show $ 2^(maxPoT-power p)*l*(ratio p)
 >                           l = case t of
 >                               Dotted -> 1.5
 >                               QuarterDotted -> 1.25
 >                               _ -> 1.0
->                           delim = case xs of
->                               [] -> ""
->                               _ -> "  "
