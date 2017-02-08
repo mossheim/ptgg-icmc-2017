@@ -18,9 +18,9 @@ Maximum power of two used as a subdivision (i.e. maxPoT = 4 => 1/(2^4) = 1/16 is
 
 > maxPoT = 4
 
-The main symbol is "Beat", which is any even subdivision of a measure (half, quarter, and eighth notes, for example)
-"Dotted" is a Beat with 3/2 the duration
-"Short" is a Beat which has reached the maximum power of two and cannot be further subdivided (convenience)
+The main symbol is `Beat`, which is any even subdivision of a measure (half, quarter, and eighth notes, for example)
+`Dotted` is a Beat with 3/2 the duration
+`Short` is a Beat which has reached the maximum power of two and cannot be further subdivided (convenience)
 
 > data RTerm = Measure | Beat | Dotted | Short
 >     deriving (Eq, Ord, Enum, Read, Show)
@@ -31,10 +31,10 @@ The main symbol is "Beat", which is any even subdivision of a measure (half, qua
 parameters
 
 Three parameters:
-	power and ratio: the duration of the beat is 1/2^power*ratio. Ratio is usually 1, unless the
-		Beat is within a tuplet in which case it becomes <written number of beats in tuplet>/<actual duration of tuplet>
-		Thus a triplet has ratio 2/3, a quintuplet ratio 4/5
-	measures: determines the length of a Measure object during the initial phase of generation and is not used for any final calculations (should always end up =1)
+  power and ratio: the duration of the beat is 1/2^power*ratio. Ratio is usually 1, unless the
+    Beat is within a tuplet in which case it becomes <written number of beats in tuplet>/<actual duration of tuplet>
+    Thus a triplet has ratio 2/3, a quintuplet ratio 4/5
+  measures: determines the length of a Measure object during the initial phase of generation and is not used for any final calculations (should always end up =1)
 
 > data Param = Param {power :: Int, measures :: Int, ratio :: Rational}
 >     deriving (Eq, Show)
@@ -64,7 +64,7 @@ Convenience method: returns Short if the subdivision about to be used will make 
 
 > shortIfMaxed x p = if toMaxPow p == x then Short else Beat
 
-====================
+===========CONVENIENCE METHODS===========
 
 Returns the highest power of two not greater than the argument
 
@@ -78,7 +78,7 @@ expanded in the future.
 > subdivide p xs = subdivN p xs
 
 subdivN is a convenience method that, given a Term's Param and a list of Ints, returns a list of Beats, Shorts, and Dotteds
-that represent dividing the parent Beat (whose Param is passed in) into smaller units, where a "1" in the list ends up with
+that represent dividing the parent Beat (whose Param is passed in) into smaller units, where a `1` in the list ends up with
 duration <Beat's duration>/<sum of the list>. In this way, any arbitrary tuplet or non-tuplet subdivision may be easily
 and concisely written without specifying anything other than the durations of its components. For example,
 subdivN p [1,1] divides a beat in half; subdivN p [1,1,1] divides it into a triplet; subdivN p [2,3] makes a quintuplet
@@ -99,63 +99,62 @@ example, triplet 16ths) may result.
 
 
 
-====================
+===========RULES===========
 
-The rules for "measure generation" determine what measures will be tied together. "letChance" determines how likely this is to happen.
+The rules for `measure generation` determine what measures will be tied together. `letChance` determines how likely this is to happen.
 
 > mRules :: Prob -> [Rule RTerm Param]
 > mRules letChance = if (letChance < 0.0) || (letChance > 1.0) then error "mRules: Chance is not within 0.0-1.0" else [
->		(Measure, 1-letChance) :-> \p -> if (measures p > 1) then [NT (Measure, halveMeasures p), NT (Measure, halveMeasures p)] else [NT (Measure, p)],
+>    (Measure, 1-letChance) :-> \p -> if (measures p > 1) then [NT (Measure, halveMeasures p), NT (Measure, halveMeasures p)] else [NT (Measure, p)],
 >       (Measure, letChance) :-> \p -> if (measures p > 1) then [Let "x" [NT (Measure, halveMeasures p)] [Var "x", Var "x"]] else [NT (Measure, p)]]
 
 Rules for rhythmic subdivision.
 
 > rRules :: Bool -> [Rule RTerm Param]
 > rRules useLets = normalize ([
->		(Measure, 1.0) :-> \p -> [NT (Beat, p)],
+>    (Measure, 1.0) :-> \p -> [NT (Beat, p)],
 >       --modes of subdividing beats:
-> 		--unchanged
+>     --unchanged
 >       (Beat, 0.2) :-> \p -> [NT (Beat, p)],
 >       --half and half
 >       (Beat, 0.15) :-> \p -> subdivide p [2,1,1],
->		(Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
->		--dotted half + quarter
->		(Beat, 0.15) :-> \p -> subdivide p [3,1],
->		--half, quarter, quarter
->		(Beat, 0.1) :-> \p -> subdivide p [1,1],
->		--syncopation
->		(Beat, 0.05) :-> \p -> subdivide p [1,2,1],
-
->		(Beat, 0.05) :-> \p -> subdivide p [1,1,1],
+>    (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
+>   --dotted half + quarter
+>    (Beat, 0.15) :-> \p -> subdivide p [3,1],
+>   --half, quarter, quarter
+>    (Beat, 0.1) :-> \p -> subdivide p [1,1],
+>   --syncopation
+>    (Beat, 0.05) :-> \p -> subdivide p [1,2,1],
+>    (Beat, 0.05) :-> \p -> subdivide p [1,1,1],
 >       --triplet (disabled because of duplicate in lets)
->		--(Beat, 0.25) :-> \p -> subdivide p [1,1,1],
+>   --(Beat, 0.25) :-> \p -> subdivide p [1,1,1],
 >       --quintuplet (disabled because of stylistic distance)
 >       --(Beat, 0) :-> \p -> subdivide p [1,1,1,1,1],
->		--keep a short short, a dotted dotted
->		(Short, 1.0) :-> \p -> [NT (Short, p)],
->		(Dotted, 1.0) :-> \p -> [NT (Dotted, p)]
->		] ++ if useLets then letRules else []) where
+>   --keep a short short, a dotted dotted
+>    (Short, 1.0) :-> \p -> [NT (Short, p)],
+>    (Dotted, 1.0) :-> \p -> [NT (Dotted, p)]
+>    ] ++ if useLets then letRules else []) where
 >       letRules = [
 >           --let rules are [x=1,x=1], [x=1,2,x=1], [x=1,x=1,x=1] ~ symmetric halves, thirds, and syncopation with symmetric bookends
->			(Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
->			(Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
->				[Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", NT(Short, half p), Var "x"]],
->			(Beat, 0.05) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
->				[Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", Var "x", Var "x", Var "x"]],
->			(Beat, 0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half $ mkRatio (2/3) p)] [Var "x", Var "x", Var "x"]]
->		]
+>      (Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
+>      (Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
+>        [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", NT(Short, half p), Var "x"]],
+>      (Beat, 0.05) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
+>        [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", Var "x", Var "x", Var "x"]],
+>     (Beat, 0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half $ mkRatio (2/3) p)] [Var "x", Var "x", Var "x"]]
+>    ]
 
-=====================
+===========GENERATION===========
 
 Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, m is the length in measures (must be a multiple of two)
 
 mGen / rGen no longer used
 
- mGen :: Int -> Int -> Int -> Sentence RTerm Param
- mGen s i m = snd $ gen (mRules 0.2) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! i
+> --mGen :: Int -> Int -> Int -> Sentence RTerm Param
+> --mGen s i m = snd $ gen (mRules 0.2) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! i
 
- rGen :: Int -> Int -> Sentence RTerm Param -> [(RTerm, Param)]
- rGen s i terms = toPairs $ snd $ gen (rRules True) (mkStdGen s, terms) !! i
+> --rGen :: Int -> Int -> Sentence RTerm Param -> [(RTerm, Param)]
+> --rGen s i terms = toPairs $ snd $ gen (rRules True) (mkStdGen s, terms) !! i
 
 > fullGen :: Int -> Int -> Int -> [(RTerm, Param)]
 > fullGen s i m = toPairs $ snd $ gen (rRules True) ms !! i where
@@ -188,7 +187,7 @@ Demo functions to try out different combinations of seed and iteration
 > demo4 s i = play $ transform' $ fullGen s i 4
 > demo8 s i = play $ transform' $ fullGen s i 8
 
-=========================
+===========EXPERIMENTS===========
 
 Generation experiments: playing around with updateProbs
 
