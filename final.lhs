@@ -19,12 +19,13 @@ Maximum power of two used as a subdivision (i.e. maxPoT = 4 => 1/(2^4) = 1/16 is
 
 The main symbol is `Beat`, which is any even subdivision of a measure (half, quarter, and eighth notes, for example)
 `Dotted` is a Beat with 3/2 the duration
+`QuarterDotted` is a Beat with 5/4 the duration
 `Short` is a Beat which has reached the maximum power of two and cannot be further subdivided (convenience)
 
-> data RTerm = Measure | Beat | Dotted | Short
+> data RTerm = Measure | Beat | Dotted | Short | QuarterDotted
 >     deriving (Eq, Ord, Enum, Read, Show)
 
-> allRTerms = [Measure, Beat, Dotted, Short]
+> allRTerms = [Measure, Beat, Dotted, Short, QuarterDotted]
 
 ===========PARAMETER DEFINITIONS===========
 
@@ -87,16 +88,15 @@ example, triplet 16ths) may result.
 
 > subdivN :: Param -> [Int] -> [Term RTerm Param]
 > subdivN p xs = if toMaxPow p < pwr then [NT (Beat, p)] else map f xs where
->                    s = fromIntegral $ sum xs
->                    r = (toRational $ potFloor s) / (fromIntegral s)
->                    pwr = truncate $ logBase 2 $ potFloor s
->                    f n = NT (rterm n, mkRatio r $ powFcn (truncate $ logBase 2 (potFloor s / potFloor n)) p) where
->                        rterm x = case (fromIntegral x)/(potFloor x) of
->                                  1.0 -> shortIfMaxed (pwr `div` n) p
->                                  1.5 -> Dotted
->                                  _ -> error "subdivN: check the array; there is an invalid value"
-
-
+>                   s = fromIntegral $ sum xs
+>                   r = (toRational $ potFloor s) / (fromIntegral s)
+>                   pwr = truncate $ logBase 2 $ potFloor s
+>                   f n = NT (rterm n, mkRatio r $ powFcn (truncate $ logBase 2 (potFloor s / potFloor n)) p) where
+>                       rterm x = case (fromIntegral x)/(potFloor x) of
+>                                 1.0 -> shortIfMaxed (pwr `div` n) p
+>                                 1.5 -> Dotted
+>                                 1.25 -> QuarterDotted
+>                                 _ -> error "subdivN: check the array; there is an invalid value"
 
 ===========RULES===========
 
@@ -104,44 +104,60 @@ The rules for `measure generation` determine what measures will be tied together
 
 > mRules :: Prob -> [Rule RTerm Param]
 > mRules letChance = if (letChance < 0.0) || (letChance > 1.0) then error "mRules: Chance is not within 0.0-1.0" else [
->    (Measure, 1-letChance) :-> \p -> if (measures p > 1) then [NT (Measure, halveMeasures p), NT (Measure, halveMeasures p)] else [NT (Measure, p)],
->       (Measure, letChance) :-> \p -> if (measures p > 1) then [Let "x" [NT (Measure, halveMeasures p)] [Var "x", Var "x"]] else [NT (Measure, p)]]
+>     (Measure, 1-letChance) :-> \p -> if (measures p > 1) then [NT (Measure, halveMeasures p), NT (Measure, halveMeasures p)] else [NT (Measure, p)],
+>         (Measure, letChance) :-> \p -> if (measures p > 1) then [Let "x" [NT (Measure, halveMeasures p)] [Var "x", Var "x"]] else [NT (Measure, p)]]
+
+Rules for time signature generation. Assumes max PoT is not violated here.
+
+> tsRules :: Bool -> [Rule RTerm Param]
+> tsRules useLets = normalize ([
+>   (Measure, 0.0) :-> \p -> [NT (Dotted, half p)], -- 3/4
+>   (Measure, 0.0) :-> \p -> [NT (Beat, p)], -- 4/4
+>   (Measure, 0.0) :-> \p -> [NT (Dotted, quarter p)], -- 3/8
+>   (Measure, 1.0) :-> \p -> [NT (QuarterDotted, half p)] -- 5/8
+>   ] ++ if useLets then letRules else []) where
+>       letRules = [
+>           ]
 
 Rules for rhythmic subdivision.
 
 > rRules :: Bool -> [Rule RTerm Param]
 > rRules useLets = normalize ([
->    (Measure, 1.0) :-> \p -> [NT (Beat, p)],
->       --modes of subdividing beats:
->     --unchanged
->       (Beat, 0.2) :-> \p -> [NT (Beat, p)],
->       --half and half
->       (Beat, 0.15) :-> \p -> subdivide p [2,1,1],
->    (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
+>   (Measure, 1.0) :-> \p -> [NT (Beat, p)], -- should not need this after adding tsRules
+>      --modes of subdividing beats:
+>    --unchanged
+>   (Beat, 0.2) :-> \p -> [NT (Beat, p)],
+>      --half and half
+>   (Beat, 0.15) :-> \p -> subdivide p [2,1,1],
+>   (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
 >   --dotted half + quarter
->    (Beat, 0.15) :-> \p -> subdivide p [3,1],
+>   (Beat, 0.15) :-> \p -> subdivide p [3,1],
 >   --half, quarter, quarter
->    (Beat, 0.1) :-> \p -> subdivide p [1,1],
+>   (Beat, 0.1) :-> \p -> subdivide p [1,1],
 >   --syncopation
->    (Beat, 0.05) :-> \p -> subdivide p [1,2,1],
->    (Beat, 0.05) :-> \p -> subdivide p [1,1,1],
->       --triplet (disabled because of duplicate in lets)
+>   (Beat, 0.05) :-> \p -> subdivide p [1,2,1],
+>   (Beat, 0.05) :-> \p -> subdivide p [1,1,1],
+>      --triplet (disabled because of duplicate in lets)
 >   --(Beat, 0.25) :-> \p -> subdivide p [1,1,1],
->       --quintuplet (disabled because of stylistic distance)
->       --(Beat, 0) :-> \p -> subdivide p [1,1,1,1,1],
+>      --quintuplet (disabled because of stylistic distance)
+>      --(Beat, 0) :-> \p -> subdivide p [1,1,1,1,1],
 >   --keep a short short, a dotted dotted
->    (Short, 1.0) :-> \p -> [NT (Short, p)],
->    (Dotted, 1.0) :-> \p -> [NT (Dotted, p)]
->    ] ++ if useLets then letRules else []) where
+>   (Short, 1.0) :-> \p -> [NT (Short, p)],
+>   --(Dotted, 1.0) :-> \p -> [NT (Dotted, p)],
+>   (Dotted, 1.0) :-> \p -> [NT (Beat, p), NT (shortIfMaxed 1 p, half p)], -- subdivide [2,1]
+>   (QuarterDotted, 1.0) :-> \p -> if toMaxPow p < 1
+>                                  then [NT (Beat, p)]
+>                                  else [NT (Dotted, half p), NT (Beat, half p)] -- subdivide [3,2]
+>   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >           --let rules are [x=1,x=1], [x=1,2,x=1], [x=1,x=1,x=1] ~ symmetric halves, thirds, and syncopation with symmetric bookends
->      (Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
->      (Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
->        [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", NT(Short, half p), Var "x"]],
->      (Beat, 0.05) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
->        [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", Var "x", Var "x", Var "x"]],
->     (Beat, 0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half $ mkRatio (2/3) p)] [Var "x", Var "x", Var "x"]]
->    ]
+>           (Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
+>           (Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
+>               [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", NT(Short, half p), Var "x"]],
+>           (Beat, 0.05) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
+>               [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", Var "x", Var "x", Var "x"]],
+>           (Beat, 0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half $ mkRatio (2/3) p)] [Var "x", Var "x", Var "x"]]
+>           ]
 
 ===========GENERATION===========
 
@@ -149,15 +165,19 @@ Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, 
 
 mGen / rGen no longer used
 
-> --mGen :: Int -> Int -> Int -> Sentence RTerm Param
-> --mGen s i m = snd $ gen (mRules 0.2) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! i
+> mGen :: Int -> Int -> Int -> Double -> Sentence RTerm Param
+> mGen s i m p = snd $ gen (mRules p) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! i
 
-> --rGen :: Int -> Int -> Sentence RTerm Param -> [(RTerm, Param)]
-> --rGen s i terms = toPairs $ snd $ gen (rRules True) (mkStdGen s, terms) !! i
+> tsGen :: Int -> Sentence RTerm Param -> Sentence RTerm Param
+> tsGen s terms = snd $ gen (tsRules False) (mkStdGen s, terms) !! 1 -- only need 1 cycle for tsGen
+
+> rGen :: Int -> Int -> Sentence RTerm Param -> [(RTerm, Param)]
+> rGen s i terms = toPairs $ snd $ gen (rRules True) (mkStdGen s, terms) !! i
 
 > fullGen :: Int -> Int -> Int -> [(RTerm, Param)]
-> fullGen s i m = toPairs $ snd $ gen (rRules True) ms !! i where
->                    ms = gen (mRules 0.25) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
+> fullGen s i m = toPairs $ snd $ gen (rRules True) tss !! i where
+>                   tss = gen (tsRules True) ms !! 1
+>                   ms = gen (mRules 0.25) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
 
 > addFinalBar :: [(RTerm, Param)] -> [(RTerm, Param)]
 > addFinalBar xs = xs ++ [(Beat, Param 0 1 1)]
@@ -179,6 +199,8 @@ mGen / rGen no longer used
 Convenience: click track + final whole note
 
 > transform' = addClick . transform . addFinalBar
+> playclick = play . transform'
+> playraw = play . transform . addFinalBar -- without click track
 
 Demo functions to try out different combinations of seed and iteration
 
@@ -213,8 +235,12 @@ Attempt at a cleaner list presentation (doesn't work especially well, would be n
 
 > present :: [(RTerm, Param)] -> String
 > present [] = "";
-> present ((t, p):xs) = f t p ++ "  " ++ present xs where
+> present ((t, p):xs) = f t p ++ delim ++ present xs where
 >                           f t p = show $ 2^(maxPoT-power p)*l*(ratio p)
 >                           l = case t of
 >                               Dotted -> 1.5
+>                               QuarterDotted -> 1.25
 >                               _ -> 1.0
+>                           delim = case xs of
+>                               [] -> ""
+>                               _ -> "  "
