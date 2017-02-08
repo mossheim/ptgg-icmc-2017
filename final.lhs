@@ -11,7 +11,8 @@ blh33
 CPSC 431/531 Final Project
 Application of musical grammars (PTGG) to rhythm.
 
-===========DEFINITIONS===========
+---------------------------------
+-----------DEFINITIONS-----------
 
 Maximum power of two used as a subdivision (i.e. maxPoT = 4 => 1/(2^4) = 1/16 is smallest unit in a measure)
 
@@ -27,7 +28,8 @@ The main symbol is `Beat`, which is any even subdivision of a measure (half, qua
 
 > allRTerms = [Measure, Beat, Dotted, Short, QuarterDotted]
 
-===========PARAMETER DEFINITIONS===========
+-------------------------------------------
+-----------PARAMETER DEFINITIONS-----------
 
 Three parameters:
   power and ratio: the duration of the beat is 1/2^power*ratio. Ratio is usually 1, unless the
@@ -98,7 +100,8 @@ example, triplet 16ths) may result.
 >                                 1.25 -> QuarterDotted
 >                                 _ -> error "subdivN: check the array; there is an invalid value"
 
-===========RULES===========
+---------------------------
+-----------RULES-----------
 
 The rules for `measure generation` determine what measures will be tied together. `letChance` determines how likely this is to happen.
 
@@ -159,7 +162,8 @@ Rules for rhythmic subdivision.
 >           (Beat, 0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half $ mkRatio (2/3) p)] [Var "x", Var "x", Var "x"]]
 >           ]
 
-===========GENERATION===========
+--------------------------------
+-----------GENERATION-----------
 
 Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, m is the length in measures (must be a multiple of two)
 
@@ -208,7 +212,8 @@ Demo functions to try out different combinations of seed and iteration
 > demo4 s i = play $ transform' $ fullGen s i 4
 > demo8 s i = play $ transform' $ fullGen s i 8
 
-===========EXPERIMENTS===========
+---------------------------------
+-----------EXPERIMENTS-----------
 
 Generation experiments: playing around with updateProbs
 
