@@ -208,15 +208,18 @@ $p > 0 , \forall x \in X: 0 < x \leq 1, \sum_{x \in X} x = 1$
 
 and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produced symbols. This allows me to define patterns of subdivision clearly and succinctly. For example, let two Phase 2 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$ and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a Short threshold of $\frac{1}{16}$:
 
+\bgroup
+\def\arraystretch{1.5}
 \begin{center}
-\begin{tabular}{ c c }
+\begin{tabular}{ l l }
  Rule & String \\
  \hline
- $ $ & $B^{1}$ \\
+ (start) & $B^{1}$ \\
  $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$              & $D^{3/4} B^{1/4}$ \\
- $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$ & $D^{3/4} B^{1/8} S^{1/16} S^{1/16}$
+ $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$ & $D^{3/4} B^{1/8} S^{1/16} S^{1/16}$ \\
 \end{tabular}
 \end{center}
+\egroup
 
 \section{Implementation}
 

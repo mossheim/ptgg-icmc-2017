@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  2 FEB 2017 09:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  8 FEB 2017 23:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -393,18 +393,18 @@ Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ¦ in font cmr10!
 
-Overfull \hbox (1.88806pt too wide) in paragraph at lines 209--210
+Overfull \hbox (1.33589pt too wide) in paragraph at lines 209--210
 \OT1/ptm/m/n/10 ple, let two Phase 2 rules be $\OML/cmm/m/it/10 B \OMS/cmsy/m/n
-/10 ! \OT1/cmr/m/n/10 [[]\OML/cmm/m/it/10 ; []$\OT1/ptm/m/n/10 ] and $\OML/cmm/
-m/it/10 B \OMS/cmsy/m/n/10 ! \OT1/cmr/m/n/10 [[]\OML/cmm/m/it/10 ; []; []\OT1/c
-mr/m/n/10 ]$\OT1/ptm/m/n/10 .
+/10 ! \OT1/cmr/m/n/10 [[]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 ]$ \OT1/ptm/m/n/1
+0 and $\OML/cmm/m/it/10 B \OMS/cmsy/m/n/10 ! \OT1/cmr/m/n/10 [[]\OML/cmm/m/it/1
+0 ; []; []\OT1/cmr/m/n/10 ]$\OT1/ptm/m/n/10 .
  []
 
 
-LaTeX Warning: Citation `euterpea' on page 2 undefined on input line 215.
+LaTeX Warning: Citation `euterpea' on page 2 undefined on input line 226.
 
 
-Overfull \hbox (1.29517pt too wide) in paragraph at lines 222--223
+Overfull \hbox (1.29517pt too wide) in paragraph at lines 233--234
 \OT1/ptm/m/n/10 au-to-mated com-po-si-tion along the sole pa-ram-e-ter of rhyth
 m.
  []
@@ -435,27 +435,27 @@ Missing character: There is no € in font ptmr7t!
 Missing character: There is no  in font ptmr7t!
 [2]
 No file ptgg_rhythms.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 238.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 249.
 [3
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 238.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 249.
  (./ptgg_rhythms.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 238.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 238.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 249.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 249.
 Package rerunfilecheck Info: File `ptgg_rhythms.out' has not changed.
-(rerunfilecheck)             Checksum: 14EA0850A09AB4040CF7818AC31E6569;767.
+(rerunfilecheck)             Checksum: C94DBA1A52A10A62FE6256D64BCAC5DC;766.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 238.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 249.
  ) 
 Here is how much of TeX's memory you used:
- 5928 strings out of 493014
- 87298 string characters out of 6133351
- 187632 words of memory out of 5000000
- 9387 multiletter control sequences out of 15000+600000
+ 5927 strings out of 493014
+ 87288 string characters out of 6133351
+ 188632 words of memory out of 5000000
+ 9386 multiletter control sequences out of 15000+600000
  16720 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  29i,14n,29p,1061b,360s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -473,7 +473,7 @@ xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/201
 dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts
 /type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw
 /times/utmri8a.pfb>
-Output written on ptgg_rhythms.pdf (3 pages, 148665 bytes).
+Output written on ptgg_rhythms.pdf (3 pages, 149069 bytes).
 PDF statistics:
  131 PDF objects out of 1000 (max. 8388607)
  111 compressed objects within 2 object streams
