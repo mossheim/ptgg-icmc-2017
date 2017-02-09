@@ -198,7 +198,7 @@ $l \in L ::= B \; | \; ( S \; | \; Dl \; | \;  lD \; | \; l…l ) \; | \;  let \
 %\noindent for the second, where $x \in V$, $y \in W$, and $V,W$ are predefined sets of variables.
 \noindent for the second, where $x$ and $y$ are variable names.
 
-\subsection{Producction Rules}
+\subsection{Production Rules}
 
 Production rules in Phase 1 are functions from measures to measure groups, $M \rightarrow K$, and in Phase 2 from beats to beat groups, $B \rightarrow L$. The strict definition of PFCG says that a single rule must produce a single string of symbols, as in the case of $B \rightarrow BB$ and $B \rightarrow SS$.  Yet \emph{Short}, as noted above, in only produced when its parameter meets certain conditions. Since the decision to output B, D or S can be made solely on the basis of the parameter value, we define rules as functions:
 
@@ -206,9 +206,17 @@ $B^a \rightarrow \mathbb{X} \in \mathbb{Q}^{p}$ where
 
 $p > 0 , \forall x \in X: 0 < x \leq 1, \sum_{x \in X} x = 1$
 
-and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produced symbols. This allows me to define patterns of subdivision clearly and succinctly. For example, let two Phase 2 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}$] and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a Short threshold of $\frac{1}{16}$:
+and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produced symbols. This allows me to define patterns of subdivision clearly and succinctly. For example, let two Phase 2 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$ and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a Short threshold of $\frac{1}{16}$:
 
-[TABLE FROM PAGE 7 TO-DO]
+\begin{center}
+\begin{tabular}{ c c }
+ Rule & String \\
+ \hline
+ $ $ & $B^{1}$ \\
+ $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$              & $D^{3/4} B^{1/4}$ \\
+ $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$ & $D^{3/4} B^{1/8} S^{1/16} S^{1/16}$
+\end{tabular}
+\end{center}
 
 \section{Implementation}
 
