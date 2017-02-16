@@ -201,11 +201,6 @@ Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, 
 > fullGen s m mp ul ri = toPairs $ rGen s ul ri $ bGen s ul $ tGen s ul $ mGen s mi m mp where
 >                           mi = truncate $ logBase 2 $ fromIntegral m
 
---fullGen :: Int -> Int -> Int -> [(RTerm, Param)]
--- > fullGen s i m = toPairs $ snd $ gen (rRules True) tss !! i where
--- >                   tss = gen (tRules True) ms !! 1
--- >                   ms = gen (mRules 0.25) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
-
 > addFinalBar :: [(RTerm, Param)] -> [(RTerm, Param)]
 > addFinalBar xs = xs ++ [(Beat, Param 0 1 1)]
 
