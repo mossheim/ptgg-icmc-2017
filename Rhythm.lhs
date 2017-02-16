@@ -6,9 +6,7 @@
 > import Data.Fixed
 
 Brian Heim
-blh33
 
-CPSC 431/531 Final Project
 Application of musical grammars (PTGG) to rhythm.
 
 ---------------------------------
