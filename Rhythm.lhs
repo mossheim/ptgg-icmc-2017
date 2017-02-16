@@ -131,6 +131,14 @@ Rules for time signature generation. Assumes max PoT is not violated here.
 >       letRules = [
 >           ]
 
+Rules for turning time signatures into beat patterns
+
+> bRules :: Bool -> [Rule RTerm Param]
+> bRules useLets = normalize ([
+>   ] ++ if useLets then letRules else []) where
+>       letRules = [
+>           ]
+
 Rules for rhythmic subdivision.
 
 > rRules :: Bool -> [Rule RTerm Param]
