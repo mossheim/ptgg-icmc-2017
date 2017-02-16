@@ -139,21 +139,30 @@ We present an approach for generating passages of rhythm via the use of a probab
 
 \subsection{Related Work}
 
-[Cite some rhythmic modeling papers here]
+One of the most commonly applied algorithms in computer music analysis and generation is the Markov chain \cite{chordia2011, gillick2009, yi, pachet}. However, Markov chains are fundamentally limited in the temporal scope of features that they can capture, which is problematic for modeling musical features like metrical structure and rhythmic patterns---for which temporal context and repetition are extremely important. As the order of the chain increases, more complex features can be modeled, but observations of states become sparse and the number of states increases exponentially. Even approaches such as variable-length Markov chains \cite{ron, buhlmann} and the extensions noted above do not entirely overcome these problems. 
+Some extensions to Markov chains exist that can overcome some of the problems of preserving metrical structure observed with more traditional approaches. Roy and Pachet model meter in melodic generation \cite{roy2013} using and extension known as Markov constraints \cite{pachet2011} to achieve properties such as properly filled measures. This method involves enumeration of possible outcomes for metrical constraints, although the complexity is mitigated to some extent by a filtering step to avoid a truly brute force search. 
+Work such as that of Lerdahl and Jackendoff \cite{gttm} and Temperley \cite{temperley2010} presents a statistical view of metrical structure, where metrical positions are assigned a probability distribution and downbeats are weighted more heavily. While these models are useful analytically and can be used to generate new rhythmic patterns, as with Markov chains, there is no support for modeling repetition, and relatively common, syncopated rhythmic patterns are unlikely due to having little downbeat content. 
 
-[Specific things to cite: Pachet's Markov chains, Lerdahl and Jackendoff's GTTM, Temperley's probabilistic models]
+[NEED TO ADD SOME MORE]
 
 \subsection{Probabilistic Temporal Graph Grammars}
 
-A grammar is defined as a 4-tuple: $G= (N,T,R,S)$ where the alphabet $N \cup T$ comprises nonterminals $N$ and terminals $T$. $R$ is a set of rules of the form $x \in N \rightarrow y^{*}$ where x is a nonterminal symbol and $y^*$ is any string of symbols in $N \cup T$. $S \in N$ is the starting symbol. Terminals are symbols that only produce themselves, i.e. cannot be further altered, while nonterminals may produce any combination of terminals and nonterminals. The generative algorithm is similar to that of L-Systems: at each generative iteration of the grammar, starting with the string $X=S$, the appropriate rule $(n \rightarrow y) \in R$ is applied to each nonterminal symbol left to right to produce a new string $X'$. This process of iteration is called expansion, because the string length is a nondecreasing function of the number of iterations. The condition that production rules operate on individual symbols without knowledge of the surrounding symbols means that this definition also describes a context-free grammar (CFG).
+A grammar is defined as a 4-tuple: $G= (N,T,R,S)$ where the alphabet $N\cup T$ comprises nonterminals, $N$, and terminals, $T$. $R$ is a set of rules of the form $x \in N \rightarrow (N \cup T)^{*}$ and $S \in N$ is the starting symbol. Terminals are symbols that only produce themselves, i.e. cannot be further altered, while nonterminals may produce any combination of terminals and nonterminals. The generative algorithm is similar to that of L-Systems: at each generative iteration of the grammar, starting with the single-symbol sequence of $X = S$, the appropriate rule $(x \rightarrow y) \in R$ is applied to each nonterminal symbol from left to right to produce a new sequence $X'$, which may contain more symbols than $X$. This process of iteration is called expansion, because the sequence length is a nondecreasing function of the number of iterations. The condition that production rules operate on individual symbols without knowledge of the surrounding symbols means that this definition also describes a Context-Free Grammar (CFG). Probabilistic context-free grammars (PCFGs) have more than one rule with the same left-hand side. Rules sharing the same left-hand side in a PCFG must have associated probabilities that sum to 1.0.
 
-% Copy over note: pi initially ended up as n within paragraph below. This may have happened elsewhere.
-
-A probabilistic context-free grammar (PCFG) is a CFG with a rule set that may contain multiple production rules per nonterminal. These grammars were introduced by the automated composition system, Kulitta, as a means to simultaneously generate harmonic and rhythmic structures \cite{quick_thesis}. Rules take the tuple form $r = (\pi, x \rightarrow y^{*})$ where $n \in [0,1]$ is the probability of rule $r$ being applied to an instance of symbol $x$. We denote the probability of rule $r$ as $\pi_r$. There is an added constraint that all probabilities for a given nonterminal sum to 1. As noted by Paul Hudak and Donya Quick [-2], PCFGs are a reasonable approach to the problem of automated music composition, as they are efficient, easily defined, and take into account the fact that probabilistic harmonic behavior has been observed in significant repertories of classical music [8, 9].
+Kulitta features a category of grammars called Probabilistic Temporal Graph Grammars\cite{quick2013farm, quick_thesis}, or PTGGs. PTGGs are essentially parameterized PCFG, where production rules are functions on parameters. Allowable functions on symbol parameters include simple conditional logic and let-in statements for variable creation and instantiation. These let-in statements allow the generation of repetitions, which are an important feature of rhythm in music.
 
 
+Rules in PTGGs have the following format:
 
-[EXTREMELY BRIEF PTGG MATH DEFINITION - BORROW FROM ICMC2015]
+$\;$ \\
+\begin{tabular}{ll}
+$x^p \rightarrow$ & $f_{1}(p)$ \\
+$\;$ & $ \vert \;  if \; cond(p) \; then \; f_{1}(p) \; else \; f_{2}(p)$ \\
+$\;$ & $\vert \; let \; x = f_{1}(p) \; in \; \{x \; | \; f_{i}(p)\}^{+}$ \\
+\end{tabular} $\;$ \\
+
+\noindent
+where each $f_{i}(p)$ indicates some function from parameter values to sequences of terminals and nonterminals and $cond(p)$ is a conditional test on the left-hand-side symbol's parameter (such as $p<2$).
 
 \section{A PTGG for Rhythm}
 

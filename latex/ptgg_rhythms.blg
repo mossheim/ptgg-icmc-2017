@@ -1,0 +1,23 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: ptgg_rhythms.aux
+The style file: IEEEtran.bst
+Database file #1: musicbib3.bib
+I was expecting a `,' or a `}'---line 801 of file musicbib3.bib
+ :   comments = Learning 
+ :                       harmonic function via clustering algorithms,
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 819 of file musicbib3.bib
+ :   comments = Learning 
+ :                       jazz grammars via Markov chains ,
+I'm skipping whatever remains of this entry
+Warning--entry type for "roy2013" isn't style-file defined
+--line 1605 of file musicbib3.bib
+Warning--I didn't find a database entry for "temperley2010"
+Warning--I didn't find a database entry for "[TO-DO]"
+-- IEEEtran.bst version 1.12 (2007/01/11) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Name 1 in "Jon Gillick, Kevin Tang, and Robert M. Keller" has a comma at the end for entry gillick2009
+while executing---line 2411 of file IEEEtran.bst
+
+Done.
+(There were 3 error messages)
