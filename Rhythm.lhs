@@ -184,21 +184,27 @@ Rules for rhythmic subdivision.
 
 Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, m is the length in measures (must be a multiple of two)
 
-mGen / rGen no longer used
-
 > mGen :: Int -> Int -> Int -> Double -> Sentence RTerm Param
 > mGen s i m p = snd $ gen (mRules p) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! i
 
-> tGen :: Int -> Sentence RTerm Param -> Sentence RTerm Param
-> tGen s terms = snd $ gen (tRules False) (mkStdGen s, terms) !! 1 -- only need 1 cycle for tGen
+> tGen :: Int -> Bool -> Sentence RTerm Param -> Sentence RTerm Param
+> tGen s ul terms = snd $ gen (tRules ul) (mkStdGen s, terms) !! 1 -- only need 1 cycle for time sig conversion
 
-> rGen :: Int -> Int -> Sentence RTerm Param -> [(RTerm, Param)]
-> rGen s i terms = toPairs $ snd $ gen (rRules True) (mkStdGen s, terms) !! i
+> bGen :: Int -> Bool -> Sentence RTerm Param -> Sentence RTerm Param
+> bGen s ul terms = snd $ gen (bRules ul) (mkStdGen s, terms) !! 1 -- only need 1 cycle for beat pattern conversion
 
-> fullGen :: Int -> Int -> Int -> [(RTerm, Param)]
-> fullGen s i m = toPairs $ snd $ gen (rRules True) tss !! i where
->                   tss = gen (tRules True) ms !! 1
->                   ms = gen (mRules 0.25) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
+> rGen :: Int -> Bool -> Int -> Sentence RTerm Param -> Sentence RTerm Param
+> rGen s ul i terms = snd $ gen (rRules ul) (mkStdGen s, terms) !! i
+
+> --Pass through all phases with some assumptions (seed and useLets are global, m is power-of-two)
+> fullGen :: Int -> Int -> Double -> Bool -> Int -> [(RTerm, Param)]
+> fullGen s m mp ul ri = toPairs $ rGen s ul ri $ bGen s ul $ tGen s ul $ mGen s mi m mp where
+>                           mi = truncate $ logBase 2 $ fromIntegral m
+
+--fullGen :: Int -> Int -> Int -> [(RTerm, Param)]
+-- > fullGen s i m = toPairs $ snd $ gen (rRules True) tss !! i where
+-- >                   tss = gen (tRules True) ms !! 1
+-- >                   ms = gen (mRules 0.25) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
 
 > addFinalBar :: [(RTerm, Param)] -> [(RTerm, Param)]
 > addFinalBar xs = xs ++ [(Beat, Param 0 1 1)]
@@ -225,9 +231,9 @@ Convenience: click track + final whole note
 
 Demo functions to try out different combinations of seed and iteration
 
-> demo2 s i = play $ transform' $ fullGen s i 2
-> demo4 s i = play $ transform' $ fullGen s i 4
-> demo8 s i = play $ transform' $ fullGen s i 8
+> --demo2 s i = play $ transform' $ fullGen s i 2
+> --demo4 s i = play $ transform' $ fullGen s i 4
+> --demo8 s i = play $ transform' $ fullGen s i 8
 
 ---------------------------------
 -----------EXPERIMENTS-----------
