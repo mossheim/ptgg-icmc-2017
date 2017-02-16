@@ -121,8 +121,8 @@ The rules for `measure generation` determine what measures will be tied together
 
 Rules for time signature generation. Assumes max PoT is not violated here.
 
-> tsRules :: Bool -> [Rule RTerm Param]
-> tsRules useLets = normalize ([
+> tRules :: Bool -> [Rule RTerm Param]
+> tRules useLets = normalize ([
 >   (Measure, 0.0) :-> \p -> [NT (Dotted, half p)], -- 3/4
 >   (Measure, 0.0) :-> \p -> [NT (Beat, p)], -- 4/4
 >   (Measure, 0.0) :-> \p -> [NT (Dotted, quarter p)], -- 3/8
@@ -135,7 +135,7 @@ Rules for rhythmic subdivision.
 
 > rRules :: Bool -> [Rule RTerm Param]
 > rRules useLets = normalize ([
->   (Measure, 1.0) :-> \p -> [NT (Beat, p)], -- should not need this after adding tsRules
+>   (Measure, 1.0) :-> \p -> [NT (Beat, p)], -- should not need this after adding tRules
 >      --modes of subdividing beats:
 >    --unchanged
 >   (Beat, 0.2) :-> \p -> [NT (Beat, p)],
@@ -181,15 +181,15 @@ mGen / rGen no longer used
 > mGen :: Int -> Int -> Int -> Double -> Sentence RTerm Param
 > mGen s i m p = snd $ gen (mRules p) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! i
 
-> tsGen :: Int -> Sentence RTerm Param -> Sentence RTerm Param
-> tsGen s terms = snd $ gen (tsRules False) (mkStdGen s, terms) !! 1 -- only need 1 cycle for tsGen
+> tGen :: Int -> Sentence RTerm Param -> Sentence RTerm Param
+> tGen s terms = snd $ gen (tRules False) (mkStdGen s, terms) !! 1 -- only need 1 cycle for tGen
 
 > rGen :: Int -> Int -> Sentence RTerm Param -> [(RTerm, Param)]
 > rGen s i terms = toPairs $ snd $ gen (rRules True) (mkStdGen s, terms) !! i
 
 > fullGen :: Int -> Int -> Int -> [(RTerm, Param)]
 > fullGen s i m = toPairs $ snd $ gen (rRules True) tss !! i where
->                   tss = gen (tsRules True) ms !! 1
+>                   tss = gen (tRules True) ms !! 1
 >                   ms = gen (mRules 0.25) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
 
 > addFinalBar :: [(RTerm, Param)] -> [(RTerm, Param)]
