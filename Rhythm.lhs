@@ -229,9 +229,10 @@ Convenience: click track + final whole note
 
 Demo functions to try out different combinations of seed and iteration
 
-> --demo2 s i = play $ transform' $ fullGen s i 2
-> --demo4 s i = play $ transform' $ fullGen s i 4
-> --demo8 s i = play $ transform' $ fullGen s i 8
+> demoN s i n = play $ transform' $ fullGen s n 0 True i
+> demo2 s i = demoN s i 2
+> demo4 s i = demoN s i 4
+> demo8 s i = demoN s i 8
 
 ---------------------------------
 ----------PRESENTATION-----------
