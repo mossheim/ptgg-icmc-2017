@@ -62,6 +62,15 @@ Modifier functions:
 
 > halveMeasures p = p{measures = (measures p) `div` 2}
 
+Convenience method: get the actual duration of p
+
+> calcDur :: RTerm -> Param -> Rational
+> calcDur t p = 2^(maxPoT-power p)*l*(ratio p) where
+>                       l = case t of
+>                           Dotted -> 1.5
+>                           QuarterDotted -> 1.25
+>                           _ -> 1.0
+
 Convenience method: returns Short if the subdivision about to be used will make the new notes the shortest possible
 
 > shortIfMaxed x p = if toMaxPow p == x then Short else Beat
@@ -244,8 +253,4 @@ Attempt at a cleaner list presentation (doesn't work especially well, would be n
 > present :: [(RTerm, Param)] -> String
 > present [] = "";
 > present ((t, p):xs) = f t p ++ delim xs "  " ++ present xs where
->                       f t p = show $ 2^(maxPoT-power p)*l*(ratio p)
->                       l = case t of
->                           Dotted -> 1.5
->                           QuarterDotted -> 1.25
->                           _ -> 1.0
+>                       f t p = show $ calcDur t p
