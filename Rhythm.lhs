@@ -77,10 +77,12 @@ Convenience method: returns Short if the subdivision about to be used will make 
 
 ===========CONVENIENCE METHODS===========
 
+> log2Floor = truncate . logBase 2
+
 Returns the highest power of two not greater than the argument
 
 > potFloor :: Int -> Double
-> potFloor x = 2.0^(truncate $ logBase 2 $ fromIntegral x)
+> potFloor x = 2.0^(log2Floor $ fromIntegral x)
 
 subdivide used to do something different, it now simply redirects to subdivN for convenience and in case it needs to be
 expanded in the future.
@@ -101,8 +103,8 @@ example, triplet 16ths) may result.
 > subdivN p xs = if toMaxPow p < pwr then [NT (Beat, p)] else map f xs where
 >                   s = fromIntegral $ sum xs
 >                   r = (toRational $ potFloor s) / (fromIntegral s)
->                   pwr = truncate $ logBase 2 $ potFloor s
->                   f n = NT (rterm n, mkRatio r $ powFcn (truncate $ logBase 2 (potFloor s / potFloor n)) p) where
+>                   pwr = log2Floor $ potFloor s
+>                   f n = NT (rterm n, mkRatio r $ powFcn (log2Floor (potFloor s / potFloor n)) p) where
 >                         rterm x = case (fromIntegral x)/(potFloor x) of
 >                                        1.0 -> shortIfMaxed (pwr `div` n) p
 >                                        1.5 -> Dotted
@@ -199,7 +201,7 @@ Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, 
 > --Pass through all phases with some assumptions (seed and useLets are global, m is power-of-two)
 > fullGen :: Int -> Int -> Double -> Bool -> Int -> [(RTerm, Param)]
 > fullGen s m mp ul ri = toPairs $ rGen s ul ri $ bGen s ul $ tGen s ul $ mGen s mi m mp where
->                           mi = truncate $ logBase 2 $ fromIntegral m
+>                           mi = log2Floor $ fromIntegral m
 
 ---------------------------------
 -------------PLAYBACK------------
@@ -240,7 +242,7 @@ Demo functions to try out different combinations of seed and iteration
 Attempt at a cleaner list presentation (doesn't work especially well, would be nice to separate things by measure)
 
 > present :: [(RTerm, Param)] -> String
-> present [] = "";
+> present [] = ""
 > present ((t, p):xs) = f t p ++ delim xs "  " ++ present xs where
 >                       f t p = show $ calcDur t p
 
@@ -269,5 +271,5 @@ This is the most convenient method to use here: s1 and s2 are the seeds for rule
 i, m, and p are the index, length in measures, and Let-probability during measure gen
 
 > randomRulesGen s1 s2 i m p = toPairs $ snd $ gen (randomRules s1) ms !! i where
->                              ms = gen (mRules p) (mkStdGen s2, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
+>                              ms = gen (mRules p) (mkStdGen s2, [NT (Measure, Param 0 m 1)]) !! (log2Floor $ fromIntegral m)
 
