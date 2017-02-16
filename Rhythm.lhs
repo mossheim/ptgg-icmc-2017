@@ -201,6 +201,9 @@ Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, 
 > fullGen s m mp ul ri = toPairs $ rGen s ul ri $ bGen s ul $ tGen s ul $ mGen s mi m mp where
 >                           mi = truncate $ logBase 2 $ fromIntegral m
 
+---------------------------------
+-------------PLAYBACK------------
+
 > addFinalBar :: [(RTerm, Param)] -> [(RTerm, Param)]
 > addFinalBar xs = xs ++ [(Beat, Param 0 1 1)]
 
@@ -231,6 +234,24 @@ Demo functions to try out different combinations of seed and iteration
 > --demo8 s i = play $ transform' $ fullGen s i 8
 
 ---------------------------------
+----------PRESENTATION-----------
+
+Attempt at a cleaner list presentation (doesn't work especially well, would be nice to separate things by measure)
+
+> present :: [(RTerm, Param)] -> String
+> present [] = "";
+> present ((t, p):xs) = f t p ++ delim xs "  " ++ present xs where
+>                       f t p = show $ calcDur t p
+
+> delim :: [a] -> String -> String
+> delim [] s = ""
+> delim _ s = s
+
+> showRules :: [Rule RTerm Param] -> String
+> showRules [] = ""
+> showRules (r:rs) = show (round $ (*1000) $ prob r) ++ delim rs "," ++ showRules rs where
+
+---------------------------------
 -----------EXPERIMENTS-----------
 
 Generation experiments: playing around with updateProbs
@@ -243,23 +264,9 @@ Generation experiments: playing around with updateProbs
 >                     ps = probs (length rs) (mkStdGen s) in
 >                       normalize $ updateProbs rs ps
 
-> showRules :: [Rule RTerm Param] -> String
-> showRules [] = ""
-> showRules (r:rs) = show (round $ (*1000) $ prob r) ++ delim rs "," ++ showRules rs where
-
-> delim :: [a] -> String -> String
-> delim [] s = ""
-> delim _ s = s
-
 This is the most convenient method to use here: s1 and s2 are the seeds for rules and generation respectively.
 i, m, and p are the index, length in measures, and Let-probability during measure gen
 
 > randomRulesGen s1 s2 i m p = toPairs $ snd $ gen (randomRules s1) ms !! i where
 >                              ms = gen (mRules p) (mkStdGen s2, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
 
-Attempt at a cleaner list presentation (doesn't work especially well, would be nice to separate things by measure)
-
-> present :: [(RTerm, Param)] -> String
-> present [] = "";
-> present ((t, p):xs) = f t p ++ delim xs "  " ++ present xs where
->                       f t p = show $ calcDur t p
