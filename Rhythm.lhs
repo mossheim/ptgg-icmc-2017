@@ -94,11 +94,11 @@ example, triplet 16ths) may result.
 >                   r = (toRational $ potFloor s) / (fromIntegral s)
 >                   pwr = truncate $ logBase 2 $ potFloor s
 >                   f n = NT (rterm n, mkRatio r $ powFcn (truncate $ logBase 2 (potFloor s / potFloor n)) p) where
->                       rterm x = case (fromIntegral x)/(potFloor x) of
->                                 1.0 -> shortIfMaxed (pwr `div` n) p
->                                 1.5 -> Dotted
->                                 1.25 -> QuarterDotted
->                                 _ -> error "subdivN: check the array; there is an invalid value"
+>                         rterm x = case (fromIntegral x)/(potFloor x) of
+>                                        1.0 -> shortIfMaxed (pwr `div` n) p
+>                                        1.5 -> Dotted
+>                                        1.25 -> QuarterDotted
+>                                        _ -> error "subdivN: check the array; there is an invalid value"
 
 ---------------------------
 -----------RULES-----------
@@ -108,7 +108,7 @@ The rules for `measure generation` determine what measures will be tied together
 > mRules :: Prob -> [Rule RTerm Param]
 > mRules letChance = if (letChance < 0.0) || (letChance > 1.0) then error "mRules: Chance is not within 0.0-1.0" else [
 >     (Measure, 1-letChance) :-> \p -> if (measures p > 1) then [NT (Measure, halveMeasures p), NT (Measure, halveMeasures p)] else [NT (Measure, p)],
->         (Measure, letChance) :-> \p -> if (measures p > 1) then [Let "x" [NT (Measure, halveMeasures p)] [Var "x", Var "x"]] else [NT (Measure, p)]]
+>     (Measure, letChance) :-> \p -> if (measures p > 1) then [Let "x" [NT (Measure, halveMeasures p)] [Var "x", Var "x"]] else [NT (Measure, p)]]
 
 Rules for time signature generation. Assumes max PoT is not violated here.
 
@@ -223,7 +223,7 @@ Generation experiments: playing around with updateProbs
 
 > randomRules s = let rs = rRules True
 >                     ps = probs (length rs) (mkStdGen s) in
->                 normalize $ updateProbs rs ps
+>                       normalize $ updateProbs rs ps
 
 > showRules :: [Rule RTerm Param] -> String
 > showRules [] = ""
@@ -237,15 +237,15 @@ This is the most convenient method to use here: s1 and s2 are the seeds for rule
 i, m, and p are the index, length in measures, and Let-probability during measure gen
 
 > randomRulesGen s1 s2 i m p = toPairs $ snd $ gen (randomRules s1) ms !! i where
->                           ms = gen (mRules p) (mkStdGen s2, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
+>                              ms = gen (mRules p) (mkStdGen s2, [NT (Measure, Param 0 m 1)]) !! (truncate $ logBase 2 $ fromIntegral m)
 
 Attempt at a cleaner list presentation (doesn't work especially well, would be nice to separate things by measure)
 
 > present :: [(RTerm, Param)] -> String
 > present [] = "";
 > present ((t, p):xs) = f t p ++ delim xs "  " ++ present xs where
->                           f t p = show $ 2^(maxPoT-power p)*l*(ratio p)
->                           l = case t of
->                               Dotted -> 1.5
->                               QuarterDotted -> 1.25
->                               _ -> 1.0
+>                       f t p = show $ 2^(maxPoT-power p)*l*(ratio p)
+>                       l = case t of
+>                           Dotted -> 1.5
+>                           QuarterDotted -> 1.25
+>                           _ -> 1.0
