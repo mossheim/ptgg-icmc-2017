@@ -244,13 +244,13 @@ Attempt at a cleaner list presentation (doesn't work especially well, would be n
 > present ((t, p):xs) = f t p ++ delim xs "  " ++ present xs where
 >                       f t p = show $ calcDur t p
 
-> delim :: [a] -> String -> String
-> delim [] s = ""
-> delim _ s = s
-
 > showRules :: [Rule RTerm Param] -> String
 > showRules [] = ""
 > showRules (r:rs) = show (round $ (*1000) $ prob r) ++ delim rs "," ++ showRules rs where
+
+> delim :: [a] -> String -> String
+> delim [] s = ""
+> delim _ s = s
 
 ---------------------------------
 -----------EXPERIMENTS-----------
