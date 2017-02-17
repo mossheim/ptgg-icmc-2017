@@ -154,14 +154,14 @@ Rules for rhythmic subdivision.
 >   (Beat, 0.2) :-> \p -> [NT (Beat, p)],
 >      --half and half
 >   (Beat, 0.15) :-> \p -> subdivide p [2,1,1],
->   (Beat, 0.2) :-> \p -> subdivide p [1,1,1,1,1],
+>   (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
 >   --dotted half + quarter
 >   (Beat, 0.15) :-> \p -> subdivide p [3,1],
 >   --half, quarter, quarter
->   (Beat, 0.1) :-> \p -> subdivide p [3,3,1],
+>   (Beat, 0.1) :-> \p -> subdivide p [1,1],
 >   --syncopation
->   (Beat, 0.05) :-> \p -> subdivide p [1,2,2,1,1],
->   (Beat, 0.2) :-> \p -> subdivide p [1,1,1],
+>   (Beat, 0.05) :-> \p -> subdivide p [1,2,1],
+>   (Beat, 0.05) :-> \p -> subdivide p [1,1,1],
 >      --triplet (disabled because of duplicate in lets)
 >   --(Beat, 0.25) :-> \p -> subdivide p [1,1,1],
 >      --quintuplet (disabled because of stylistic distance)
