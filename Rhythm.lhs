@@ -128,20 +128,20 @@ Rules for time signature generation. Assumes max PoT is not violated here.
 
 > tRules :: Bool -> [Rule RTerm Param]
 > tRules useLets = normalize ([
->   (Measure, 0.0) :-> \p -> [NT (Dotted, half p)], -- 3/4
->   (Measure, 1.0) :-> \p -> [NT (Beat, p)], -- 4/4
->   (Measure, 0.0) :-> \p -> [NT (Dotted, quarter p)], -- 3/8
->   (Measure, 0.0) :-> \p -> [NT (QuarterDotted, half p)] -- 5/8
+>   (Measure, 1.0) :-> \p -> [NT (ThreeFour, p)] -- 3/4
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
+>   --let rules go here
 >           ]
 
 Rules for turning time signatures into beat patterns
 
 > bRules :: Bool -> [Rule RTerm Param]
 > bRules useLets = normalize ([
+>   (ThreeFour, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (Beat, quarter p)]
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
+>   --let rules go here
 >           ]
 
 Rules for rhythmic subdivision.
