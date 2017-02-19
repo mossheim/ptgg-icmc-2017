@@ -129,9 +129,9 @@ Rules for time signature generation. Assumes max PoT is not violated here.
 
 > tRules :: Bool -> [Rule RTerm Param]
 > tRules useLets = normalize ([
->   (Measure, 1.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
+>   (Measure, 0.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
 >   (Measure, 0.0) :-> \p -> [NT (NineEight, p)], -- 9/8
->   (Measure, 0.0) :-> \p -> [NT (FiveEight, p)] -- 5/8
+>   (Measure, 1.0) :-> \p -> [NT (FiveEight, p)] -- 5/8
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >   --let rules go here
