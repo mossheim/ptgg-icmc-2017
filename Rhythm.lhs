@@ -131,7 +131,7 @@ Rules for time signature generation. Assumes max PoT is not violated here.
 > tRules useLets = normalize ([
 >   (Measure, 1.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
 >   (Measure, 0.0) :-> \p -> [NT (NineEight, p)], -- 9/8
->   (Measure, 0.0) :-> \p -> [NT (FiveEight, p)], -- 5/8
+>   (Measure, 0.0) :-> \p -> [NT (FiveEight, p)] -- 5/8
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >   --let rules go here
@@ -265,7 +265,7 @@ Attempt at a cleaner list presentation (doesn't work especially well, would be n
 
 > showRules :: [Rule RTerm Param] -> String
 > showRules [] = ""
-> showRules (r:rs) = show (round $ (*1000) $ prob r) ++ delim rs "," ++ showRules rs where
+> showRules (r:rs) = show (round $ (*1000) $ prob r) ++ delim rs "," ++ showRules rs
 
 > delim :: [a] -> String -> String
 > delim [] s = ""
