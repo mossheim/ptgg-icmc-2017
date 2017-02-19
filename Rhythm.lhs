@@ -25,11 +25,12 @@ The main symbol is `Beat`, which is any even subdivision of a measure (half, qua
 
 > data RTerm = Measure | 
 >              FourFour | ThreeFour | TwoFour | SixEight | NineEight | 
+>              FiveEight |
 >              --CustomMeasure Int Int |
 >              Beat | Dotted | Short | QuarterDotted
 >     deriving (Eq, Ord, Enum, Read, Show)
 
-> allRTerms = [Measure, FourFour, ThreeFour, TwoFour, SixEight, NineEight, Beat, Dotted, Short, QuarterDotted]
+> allRTerms = [Measure, FourFour, ThreeFour, TwoFour, SixEight, NineEight, FiveEight, Beat, Dotted, Short, QuarterDotted]
 
 -------------------------------------------
 -----------PARAMETER DEFINITIONS-----------
@@ -129,7 +130,8 @@ Rules for time signature generation. Assumes max PoT is not violated here.
 > tRules :: Bool -> [Rule RTerm Param]
 > tRules useLets = normalize ([
 >   (Measure, 1.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
->   (Measure, 0.0) :-> \p -> [NT (NineEight, p)] -- 9/8
+>   (Measure, 0.0) :-> \p -> [NT (NineEight, p)], -- 9/8
+>   (Measure, 0.0) :-> \p -> [NT (FiveEight, p)], -- 5/8
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >   --let rules go here
@@ -142,7 +144,8 @@ Rules for turning time signatures into beat patterns
 >   (ThreeFour, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (Beat, quarter p)],
 >   (ThreeFour, 0.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, half p)],
 >   (ThreeFour, 2.0) :-> \p -> [NT (Beat, half p), NT (Beat, quarter p)],
->   (NineEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Dotted, quarter p), NT (Dotted, quarter p)]
+>   (NineEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Dotted, quarter p), NT (Dotted, quarter p)],
+>   (FiveEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Beat, quarter p)]
 >   --(NineEight, 1.0) :-> \p -> [NT (Dotted, half p), NT (Dotted, quarter p)]
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
