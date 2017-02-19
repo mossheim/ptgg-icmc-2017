@@ -16,7 +16,7 @@ Application of musical grammars (PTGG) to rhythm.
 
 Maximum power of two used as a subdivision (i.e. maxPoT = 4 => 1/(2^4) = 1/16 is smallest unit in a measure)
 
-> maxPoT = 5
+> maxPoT = 4
 
 The main symbol is `Beat`, which is any even subdivision of a measure (half, quarter, and eighth notes, for example)
 `Dotted` is a Beat with 3/2 the duration
@@ -128,7 +128,8 @@ Rules for time signature generation. Assumes max PoT is not violated here.
 
 > tRules :: Bool -> [Rule RTerm Param]
 > tRules useLets = normalize ([
->   (Measure, 1.0) :-> \p -> [NT (ThreeFour, p)] -- 3/4
+>   (Measure, 1.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
+>   (Measure, 0.0) :-> \p -> [NT (NineEight, p)] -- 9/8
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >   --let rules go here
@@ -138,9 +139,17 @@ Rules for turning time signatures into beat patterns
 
 > bRules :: Bool -> [Rule RTerm Param]
 > bRules useLets = normalize ([
->   (ThreeFour, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (Beat, quarter p)]
+>   (ThreeFour, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (Beat, quarter p)],
+>   (ThreeFour, 0.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, half p)],
+>   (ThreeFour, 2.0) :-> \p -> [NT (Beat, half p), NT (Beat, quarter p)],
+>   (NineEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Dotted, quarter p), NT (Dotted, quarter p)]
+>   --(NineEight, 1.0) :-> \p -> [NT (Dotted, half p), NT (Dotted, quarter p)]
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
+>           (ThreeFour, 1.0) :-> \p -> [Let "x" [NT (Beat, quarter p)] [NT (Beat, quarter p), Var "x", Var "x"]],
+>           (ThreeFour, 0.0) :-> \p -> [Let "x" [NT (Beat, quarter p)] [Var "x", Var "x", NT (Beat, quarter p)]],
+>           (NineEight, 1.0) :-> \p -> [Let "x" [NT (Dotted, quarter p)] [Var "x", Var "x", Var "x"]],
+>           (NineEight, 1.0) :-> \p -> [Let "x" [NT (Dotted, quarter p)] [NT (Dotted, quarter p), Var "x", Var "x"]]
 >   --let rules go here
 >           ]
 
@@ -148,28 +157,28 @@ Rules for rhythmic subdivision.
 
 > rRules :: Bool -> [Rule RTerm Param]
 > rRules useLets = normalize ([
->   (Measure, 1.0) :-> \p -> [NT (Beat, p)], -- should not need this after adding tRules
->      --modes of subdividing beats:
+>    --modes of subdividing beats:
 >    --unchanged
->   (Beat, 0.2) :-> \p -> [NT (Beat, p)],
+>   (Beat, 1.0) :-> \p -> [NT (Beat, p)],
 >      --half and half
 >   (Beat, 0.15) :-> \p -> subdivide p [2,1,1],
 >   (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
 >   --dotted half + quarter
->   (Beat, 0.15) :-> \p -> subdivide p [3,1],
+>   (Beat, 0.1) :-> \p -> subdivide p [3,1],
 >   --half, quarter, quarter
 >   (Beat, 0.1) :-> \p -> subdivide p [1,1],
 >   --syncopation
->   (Beat, 0.05) :-> \p -> subdivide p [1,2,1],
->   (Beat, 0.05) :-> \p -> subdivide p [1,1,1],
+>   --(Beat, 0.05) :-> \p -> subdivide p [1,2,1],
+>   --(Beat, 0.02) :-> \p -> subdivide p [1,1,1],
 >      --triplet (disabled because of duplicate in lets)
->   --(Beat, 0.25) :-> \p -> subdivide p [1,1,1],
+>   (Beat, 0.1) :-> \p -> subdivide p [1,1,1],
 >      --quintuplet (disabled because of stylistic distance)
 >      --(Beat, 0) :-> \p -> subdivide p [1,1,1,1,1],
 >   --keep a short short, a dotted dotted
 >   (Short, 1.0) :-> \p -> [NT (Short, p)],
->   --(Dotted, 1.0) :-> \p -> [NT (Dotted, p)],
+>   (Dotted, 3.0) :-> \p -> [NT (Dotted, p)],
 >   (Dotted, 1.0) :-> \p -> [NT (Beat, p), NT (shortIfMaxed 1 p, half p)], -- subdivide [2,1]
+>   (Dotted, 1.0) :-> \p -> [NT (shortIfMaxed 1 p, half p), NT (shortIfMaxed 1 p, half p), NT (shortIfMaxed 1 p, half p)], -- subdivide [1,1,1]
 >   (QuarterDotted, 1.0) :-> \p -> if toMaxPow p < 1
 >                                  then [NT (Beat, p)]
 >                                  else [NT (Dotted, half p), NT (Beat, half p)] -- subdivide [3,2]
@@ -177,11 +186,13 @@ Rules for rhythmic subdivision.
 >       letRules = [
 >           --let rules are [x=1,x=1], [x=1,2,x=1], [x=1,x=1,x=1] ~ symmetric halves, thirds, and syncopation with symmetric bookends
 >           (Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
->           (Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
->               [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", NT(Short, half p), Var "x"]],
->           (Beat, 0.05) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
->               [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", Var "x", Var "x", Var "x"]],
->           (Beat, 0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half $ mkRatio (2/3) p)] [Var "x", Var "x", Var "x"]]
+>           (Dotted, 1.0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [NT (shortIfMaxed 1 p, half p), Var "x", Var "x"]], -- subdivide [1,x,x]
+>           (Dotted, 1.0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x", Var "x"]] -- subdivide [x,x,x]
+>           --(Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
+>           --    [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", NT(Short, half p), Var "x"]],
+>           --(Beat, 0.05) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
+>           --    [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", Var "x", Var "x", Var "x"]],
+>           --(Beat, 0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half $ mkRatio (2/3) p)] [Var "x", Var "x", Var "x"]]
 >           ]
 
 --------------------------------
