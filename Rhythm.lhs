@@ -167,20 +167,20 @@ Rules for rhythmic subdivision.
 >   (Beat, 0.15) :-> \p -> subdivide p [2,1,1],
 >   (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
 >   --dotted half + quarter
->   (Beat, 0.1) :-> \p -> subdivide p [3,1],
+>   --(Beat, 0.1) :-> \p -> subdivide p [3,1],
 >   --half, quarter, quarter
 >   (Beat, 0.1) :-> \p -> subdivide p [1,1],
 >   --syncopation
 >   --(Beat, 0.05) :-> \p -> subdivide p [1,2,1],
 >   --(Beat, 0.02) :-> \p -> subdivide p [1,1,1],
 >      --triplet (disabled because of duplicate in lets)
->   (Beat, 0.1) :-> \p -> subdivide p [1,1,1],
+>   --(Beat, 0.1) :-> \p -> subdivide p [1,1,1],
 >      --quintuplet (disabled because of stylistic distance)
 >      --(Beat, 0) :-> \p -> subdivide p [1,1,1,1,1],
 >   --keep a short short, a dotted dotted
 >   (Short, 1.0) :-> \p -> [NT (Short, p)],
 >   (Dotted, 3.0) :-> \p -> [NT (Dotted, p)],
->   (Dotted, 1.0) :-> \p -> [NT (Beat, p), NT (shortIfMaxed 1 p, half p)], -- subdivide [2,1]
+>   --(Dotted, 1.0) :-> \p -> [NT (Beat, p), NT (shortIfMaxed 1 p, half p)], -- subdivide [2,1]
 >   (Dotted, 1.0) :-> \p -> [NT (shortIfMaxed 1 p, half p), NT (shortIfMaxed 1 p, half p), NT (shortIfMaxed 1 p, half p)], -- subdivide [1,1,1]
 >   (QuarterDotted, 1.0) :-> \p -> if toMaxPow p < 1
 >                                  then [NT (Beat, p)]
@@ -188,9 +188,9 @@ Rules for rhythmic subdivision.
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >           --let rules are [x=1,x=1], [x=1,2,x=1], [x=1,x=1,x=1] ~ symmetric halves, thirds, and syncopation with symmetric bookends
->           (Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
->           (Dotted, 1.0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [NT (shortIfMaxed 1 p, half p), Var "x", Var "x"]], -- subdivide [1,x,x]
->           (Dotted, 1.0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x", Var "x"]] -- subdivide [x,x,x]
+>           (Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]]
+>           --(Dotted, 1.0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [NT (shortIfMaxed 1 p, half p), Var "x", Var "x"]], -- subdivide [1,x,x]
+>           --(Dotted, 1.0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x", Var "x"]] -- subdivide [x,x,x]
 >           --(Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
 >           --    [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [Var "x", NT(Short, half p), Var "x"]],
 >           --(Beat, 0.05) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
