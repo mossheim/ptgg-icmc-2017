@@ -16,7 +16,7 @@ Application of musical grammars (PTGG) to rhythm.
 
 Maximum power of two used as a subdivision (i.e. maxPoT = 4 => 1/(2^4) = 1/16 is smallest unit in a measure)
 
-> maxPoT = 4
+> maxPoT = 5
 
 The main symbol is `Beat`, which is any even subdivision of a measure (half, quarter, and eighth notes, for example)
 `Dotted` is a Beat with 3/2 the duration
@@ -131,7 +131,8 @@ Rules for time signature generation. Assumes max PoT is not violated here.
 > tRules useLets = normalize ([
 >   (Measure, 0.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
 >   (Measure, 0.0) :-> \p -> [NT (NineEight, p)], -- 9/8
->   (Measure, 1.0) :-> \p -> [NT (FiveEight, p)] -- 5/8
+>   (Measure, 0.0) :-> \p -> [NT (FiveEight, p)], -- 5/8
+>   (Measure, 1.0) :-> \p -> [NT (ThirteenSixteen, p)] -- 13/16
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >   --let rules go here
@@ -145,7 +146,8 @@ Rules for turning time signatures into beat patterns
 >   (ThreeFour, 0.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, half p)],
 >   (ThreeFour, 2.0) :-> \p -> [NT (Beat, half p), NT (Beat, quarter p)],
 >   (NineEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Dotted, quarter p), NT (Dotted, quarter p)],
->   (FiveEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Beat, quarter p)]
+>   (FiveEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Beat, quarter p)],
+>   (ThirteenSixteen, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (Beat, quarter p), NT (shortIfMaxed 4 p, quarter $ quarter p)]
 >   --(NineEight, 1.0) :-> \p -> [NT (Dotted, half p), NT (Dotted, quarter p)]
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
@@ -164,7 +166,7 @@ Rules for rhythmic subdivision.
 >    --unchanged
 >   (Beat, 1.0) :-> \p -> [NT (Beat, p)],
 >      --half and half
->   (Beat, 0.15) :-> \p -> subdivide p [2,1,1],
+>   --(Beat, 0.15) :-> \p -> subdivide p [2,1,1],
 >   (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
 >   --dotted half + quarter
 >   --(Beat, 0.1) :-> \p -> subdivide p [3,1],
@@ -172,11 +174,10 @@ Rules for rhythmic subdivision.
 >   (Beat, 0.1) :-> \p -> subdivide p [1,1],
 >   --syncopation
 >   --(Beat, 0.05) :-> \p -> subdivide p [1,2,1],
->   --(Beat, 0.02) :-> \p -> subdivide p [1,1,1],
 >      --triplet (disabled because of duplicate in lets)
->   --(Beat, 0.1) :-> \p -> subdivide p [1,1,1],
+>   (Beat, 0.1) :-> \p -> subdivide p [1,1,1],
 >      --quintuplet (disabled because of stylistic distance)
->      --(Beat, 0) :-> \p -> subdivide p [1,1,1,1,1],
+>   (Beat, 0.1) :-> \p -> subdivide p [1,1,1,1,1],
 >   --keep a short short, a dotted dotted
 >   (Short, 1.0) :-> \p -> [NT (Short, p)],
 >   (Dotted, 3.0) :-> \p -> [NT (Dotted, p)],
