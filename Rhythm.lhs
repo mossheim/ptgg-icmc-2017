@@ -25,12 +25,12 @@ The main symbol is `Beat`, which is any even subdivision of a measure (half, qua
 
 > data RTerm = Measure | 
 >              FourFour | ThreeFour | TwoFour | SixEight | NineEight | 
->              FiveEight |
+>              FiveEight | ThirteenSixteen |
 >              --CustomMeasure Int Int |
 >              Beat | Dotted | Short | QuarterDotted
 >     deriving (Eq, Ord, Enum, Read, Show)
 
-> allRTerms = [Measure, FourFour, ThreeFour, TwoFour, SixEight, NineEight, FiveEight, Beat, Dotted, Short, QuarterDotted]
+> allRTerms = [Measure, FourFour, ThreeFour, TwoFour, SixEight, NineEight, FiveEight, ThirteenSixteen, Beat, Dotted, Short, QuarterDotted]
 
 -------------------------------------------
 -----------PARAMETER DEFINITIONS-----------
