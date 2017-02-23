@@ -37,11 +37,11 @@ Expand a Sentence while adjusting onsets of Let statements.
 >         in  shiftOnsets d v ++ expand2 (d+totalDur v) e ts
 >     NT(x,p) -> NT(x,p{onset=d}) : expand2 (d+dur p) e ts
 
-> data X = X
->     deriving (Eq, Show)
-
 ================================================
 Testing
+
+> data X = X
+>     deriving (Eq, Show)
 
 > rules :: [Rule X MP]
 > rules = [
