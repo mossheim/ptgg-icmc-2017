@@ -43,6 +43,9 @@ Testing
 > data X = X
 >     deriving (Eq, Show)
 
+Possible usage (needs last function definition):
+if (last p && dur p >hn) then [NT (X, h p), NT (X, ho p)] else  [NT (X,p)]
+
 > rules :: [Rule X MP]
 > rules = [
 >     (X, 0.4) :-> \p -> [NT (X, h p), NT (X, ho p)],
