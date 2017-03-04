@@ -218,6 +218,12 @@ Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, 
 > fullGen s m mp ul ri = toPairs $ rGen s ul ri $ bGen s ul $ tGen s ul $ mGen s mi m mp where
 >                           mi = log2Floor $ fromIntegral m
 
+> type RuleSet = [Rule RTerm Param]
+
+--> fullGen' :: Int -> [(RuleSet, Int, Bool)] -> [(RTerm, Param)]
+--> fullGen' s [] = []
+--> fullGen' s ((rset, i, doExpand):xs) = 
+
 ---------------------------------
 -------------PLAYBACK------------
 
