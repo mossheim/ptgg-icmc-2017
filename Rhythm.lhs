@@ -23,12 +23,12 @@ The main symbol is `Beat`, which is any even subdivision of a measure (half, qua
 
 > data RTerm = Measure | 
 >              FourFour | ThreeFour | TwoFour | SixEight | NineEight | 
->              FiveEight |
+>              FiveEight | ThirteenSixteen | FifteenSixteen | SevenEight |
 >              --CustomMeasure Int Int |
 >              Beat | Dotted | Short | QuarterDotted
 >     deriving (Eq, Ord, Enum, Read, Show)
 
-> allRTerms = [Measure, FourFour, ThreeFour, TwoFour, SixEight, NineEight, FiveEight, Beat, Dotted, Short, QuarterDotted]
+> allRTerms = [Measure, FourFour, ThreeFour, TwoFour, SixEight, NineEight, FiveEight, ThirteenSixteen, FifteenSixteen, SevenEight, Beat, Dotted, Short, QuarterDotted]
 
 -------------------------------------------
 -----------PARAMETER DEFINITIONS-----------
@@ -127,9 +127,12 @@ Rules for time signature generation. Assumes max PoT is not violated here.
 
 > tRules :: Bool -> [Rule RTerm Param]
 > tRules useLets = normalize ([
->   (Measure, 0.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
+>   (Measure, 1.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
 >   (Measure, 0.0) :-> \p -> [NT (NineEight, p)], -- 9/8
->   (Measure, 1.0) :-> \p -> [NT (FiveEight, p)] -- 5/8
+>   (Measure, 1.0) :-> \p -> [NT (FiveEight, p)], -- 5/8
+>   --(Measure, 1.0) :-> \p -> [NT (ThirteenSixteen, p)], -- 13/16
+>   (Measure, 2.0) :-> \p -> [NT (FifteenSixteen, p)], -- 15/16
+>   (Measure, 1.0) :-> \p -> [NT (SevenEight, p)] -- 7/8
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >   --let rules go here
@@ -141,16 +144,23 @@ Rules for turning time signatures into beat patterns
 > bRules useLets = normalize ([
 >   (ThreeFour, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (Beat, quarter p)],
 >   (ThreeFour, 0.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, half p)],
->   (ThreeFour, 1.0) :-> \p -> [NT (Beat, half p), NT (Beat, quarter p)],
->   (NineEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Dotted, quarter p), NT (Dotted, quarter p)],
->   (FiveEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Beat, quarter p)]
+>   --(ThreeFour, 1.0) :-> \p -> [NT (Beat, half p), NT (Beat, quarter p)],
+>   (NineEight, 0.0) :-> \p -> [NT (Dotted, quarter p), NT (Dotted, quarter p), NT (Dotted, quarter p)],
+>   (FiveEight, 1.0) :-> \p -> [NT (Dotted, quarter p), NT (Beat, quarter p)],
+>   --(ThirteenSixteen, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (QuarterDotted, quarter p)],
+>   (FifteenSixteen, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (Beat, quarter p), NT (Dotted, eighth p)],
+>   (FifteenSixteen, 1.0) :-> \p -> [NT (QuarterDotted, quarter p), NT (QuarterDotted, quarter p), NT (QuarterDotted, quarter p)],
+>   (SevenEight, 1.0) :-> \p -> [NT (Beat, quarter p), NT (Beat, quarter p), NT (Dotted, quarter p)]
 >   --(NineEight, 1.0) :-> \p -> [NT (Dotted, half p), NT (Dotted, quarter p)]
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
->           (ThreeFour, 1.0) :-> \p -> [Let "x" [NT (Beat, quarter p)] [NT (Beat, quarter p), Var "x", Var "x"]],
->           (ThreeFour, 1.0) :-> \p -> [Let "x" [NT (Beat, quarter p)] [Var "x", Var "x", NT (Beat, quarter p)]],
->           (NineEight, 1.0) :-> \p -> [Let "x" [NT (Dotted, quarter p)] [Var "x", Var "x", Var "x"]],
->           (NineEight, 1.0) :-> \p -> [Let "x" [NT (Dotted, quarter p)] [NT (Dotted, quarter p), Var "x", Var "x"]]
+>           --(ThreeFour, 1.0) :-> \p -> [Let "x" [NT (Beat, quarter p)] [NT (Beat, quarter p), Var "x", Var "x"]],
+>           (ThreeFour, 0.0) :-> \p -> [Let "x" [NT (Beat, quarter p)] [Var "x", Var "x", NT (Beat, quarter p)]],
+>           (NineEight, 0.0) :-> \p -> [Let "x" [NT (Dotted, quarter p)] [Var "x", Var "x", Var "x"]],
+>           (NineEight, 0.0) :-> \p -> [Let "x" [NT (Dotted, quarter p)] [NT (Dotted, quarter p), Var "x", Var "x"]],
+>           (SevenEight, 0.0) :-> \p -> [Let "x" [NT (Beat, quarter p)] [Var "x", Var "x", NT (Dotted, quarter p)]],
+>           (FiveEight, 0.0) :-> \p -> [Let "x" [NT (Beat, eighth p)] [Var "x", Var "x", NT (Dotted, eighth p)], Let "y" [NT (Beat, eighth p)] [Var "y", Var "y"]],
+>           (FifteenSixteen, 0.0) :-> \p -> [Let "x" [NT (Beat, quarter p)] [Var "x", NT (Beat, quarter p), Var "x", NT (Dotted, eighth p)]]
 >   --let rules go here
 >           ]
 
@@ -160,29 +170,38 @@ Rules for rhythmic subdivision.
 > rRules useLets = normalize ([
 >    --modes of subdividing beats:
 >    --unchanged
->   (Beat, 1.0) :-> \p -> [NT (Beat, p)],
+>   (Beat, 0.7) :-> \p -> [NT (Beat, p)],
 >      --half and half
->   (Beat, 0.15) :-> \p -> subdivide p [2,1,1],
->   (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
+>   --(Beat, 0.1) :-> \p -> subdivide p [2,1,1],
+>   (Beat, 0.15) :-> \p -> subdivide p [1,1,1,1,1],
+>   (Beat, 0.15) :-> \p -> subdivide p [1,3,1],
+>   (Beat, 0.15) :-> \p -> subdivide p [1,2,2,1],
+>   (Beat, 0.15) :-> \p -> subdivide p [3,2],
+>   (Beat, 0.15) :-> \p -> subdivide p [2,3],
 >   --dotted half + quarter
->   (Beat, 0.1) :-> \p -> subdivide p [3,1],
+>   (Beat, 0.3) :-> \p -> subdivide p [3,1],
 >   --half, quarter, quarter
->   (Beat, 0.1) :-> \p -> subdivide p [1,1],
+>   --(Beat, 0.1) :-> \p -> subdivide p [1,1],
 >   --syncopation
 >   --(Beat, 0.05) :-> \p -> subdivide p [1,2,1],
->   (Beat, 0.1) :-> \p -> subdivide p [1,1,1],
+>   (Beat, 0.2) :-> \p -> subdivide p [1,1,1],
+>   (Beat, 0.4) :-> \p -> subdivide p [2,1],
+>   --(Beat, 0.1) :-> \p -> subdivide p [2,2,1],
 >      --triplet (disabled because of duplicate in lets)
 >   --(Beat, 0.1) :-> \p -> subdivide p [1,1,1],
 >      --quintuplet (disabled because of stylistic distance)
 >      --(Beat, 0) :-> \p -> subdivide p [1,1,1,1,1],
 >   --keep a short short, a dotted dotted
 >   (Short, 1.0) :-> \p -> [NT (Short, p)],
->   (Dotted, 3.0) :-> \p -> [NT (Dotted, p)],
+>   (Dotted, 1.0) :-> \p -> [NT (Dotted, p)],
 >   --(Dotted, 1.0) :-> \p -> [NT (Beat, p), NT (shortIfMaxed 1 p, half p)], -- subdivide [2,1]
 >   (Dotted, 1.0) :-> \p -> [NT (shortIfMaxed 1 p, half p), NT (shortIfMaxed 1 p, half p), NT (shortIfMaxed 1 p, half p)], -- subdivide [1,1,1]
 >   (QuarterDotted, 1.0) :-> \p -> if toMaxPow p < 1
->                                  then [NT (Beat, p)]
->                                  else [NT (Dotted, half p), NT (Beat, half p)] -- subdivide [3,2]
+>                                  then [NT (QuarterDotted, p)]
+>                                  else [NT (Dotted, half p), NT (Beat, half p)],
+>   (QuarterDotted, 1.0) :-> \p -> if toMaxPow p < 1
+>                                  then [NT (QuarterDotted, p)]
+>                                  else [NT (Beat, half p), NT (Dotted, half p)]
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >           --let rules are [x=1,x=1], [x=1,2,x=1], [x=1,x=1,x=1] ~ symmetric halves, thirds, and syncopation with symmetric bookends
