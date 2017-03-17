@@ -1,3 +1,5 @@
+fullGen 302 8 0.25 True 2
+
 > module Final where
 > import Euterpea
 > import Kulitta.PTGG
