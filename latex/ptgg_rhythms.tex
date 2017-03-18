@@ -177,23 +177,37 @@ The grammar proposed here is based on the observation that many theories of West
 
 We also introduce the notion of \emph{production phases} into the PTGG framework to account for the need for different rules to take place at different granularities in the generative process.
 
-Durations are treated as both terminals and nonterminals of an infinite parametrized alphabet of duration types in a four-step generative process that first divides a “raw” duration, equal to a power of two, into a sequence of measures; second, these measures are transformed into whole note durations and subdivided further. Throughout the following sections, we use $1.0$ to represent the duration of a whole note.
+Durations are treated as both terminals and nonterminals of an infinite parametrized alphabet of duration types in a four-phase generation algorithm process, each step of which subdivides an initial duration into smaller and smaller units.
+
+Throughout the following sections, we use $1.0$ to represent the duration of a whole note.
 
 \subsection{Nonterminals}
 
-The nonterminals of the grammar are $N={Measure, \; Beat}$. 
+The nonterminals of the grammar are $N={Beat, Measures} \cup TS$ where $TS$ is a set of \emph{time signature symbols}. 
 
-The \emph{Beat} symbol represents a note with duration $2^n/m$ where $n$ and $m$ are integers with $n \geq 0$, $m \geq 1$; \emph{Measure} is the term used for a raw duration whose value is a positive integer. Measures only appear in the first phase of production and are replaced with Beats of duration $1.0$ in the second phase. The reason for this distinction is twofold: first, it was desired that the second phase of production begin with a series of $1.0$ durations; second, it allows the frequency of variable instantiation at the hypermetrical level to be controlled independently of that at the metrical level.
+The \emph{Beat} symbol represents a note with duration $2^n/m$ where $n$ and $m$ are integers with $n \geq 0$, $m \geq 1$. \emph{Measures} represents a nonzero length of consecutive measures; each measure has nonzero duration but has not yet been assigned a time signature. That assignation is handled through \emph{time signature symbols} such as \emph{FourFour}, \emph{ThreeFour}, and \emph{SixEight}. Any time signature that could appear in the final output must be included as a symbol in $TS$.
 
 \subsection{Terminals}
 
-The terminals used are $T={Dotted, \; Short}$.
+The terminals used are $T={Dotted, QuarterDotted, Short}$.
 
-The \emph{Dotted} symbol represents a duration that, like a dotted note, lasts for $1.5$ times the value of its undotted value. It was chosen to be a terminal for convenience since any subdivision of a dotted value can also be articulated as a more complex subdivision of a longer duration. Short stands for a Beat which has been subdivided to the point where its duration is less than or equal to $1/2^n$ , where $n$ is an arbitrary and predetermined integer constant. This behavior is designed to mimic the limits of human performers’ rhythmic articulation. The notations Md, Bd, Sd, Dd will be used hereafter for Measures, Beats, Shorts, and Dotteds of duration d respectively.
+The \emph{Dotted} symbol represents a duration analogous to a dotted note; it lasts $1.5$ times its undotted value. It was chosen to be a terminal for convenience, since any subdivision of a dotted value can also be articulated as a more complex subdivision of a longer duration. Similarly, a \emph{QuarterDotted} lasts for $1.25$ times its undotted value. Although this symbol is not typically found in common practice notation, a duration of $\frac{5}{8}$ is found frequently in situations where, for example, a quarter note is tied to the first of a series of sixteenth notes. Because the grammar has no way to represent ties, this symbol is included for robustness. One could argue that, for the sake of completion, symbols for $\frac{7}{8}$, $\frac{9}{8}$, and so on ought also to be defined. We have chosen to forego defining these symbols because (1) their durations occur less frequently than $\frac{3}{8}$ and $\frac{5}{8}$, (2) we are still able to express a wide variety of rhythms without them, (3) there are other, more elegant routes to the same solution (see Future Work).
+
+\emph{Short} stands for a \emph{Beat} which has been subdivided to the point where its duration is less than or equal to $1/2^n$, where $n$ is an arbitrary integer constant. Intuitively, a very short note is prevented from being further subdivided. This behavior is designed to mimic the limits of human performers’ rhythmic articulation.
+
+The notations $B^d$, $S^d$, $D^d$, $Q^d$ will be used hereafter for $Beat$, $Short$, $Dotted$, and $QuarterDotted$ symbols of duration $d$ respectively. Since a $Measures$ symbol does not have duration, but rather length, we use the notation $M^l$ for a \emph{Measures} of length $l$.
 
 \subsection{Production Phases}
 
-Production occurs in four phases of rulesets. A sentence is not considered well-formed until passing through all four phases. Phase 1 begins with the string Md where$ d=2^a, a \in N$, and ends with the string $A \in K$. Letting $A_V$ be the set of all Md in A and all A’s variables, Phase 1 only halts when $\forall M^d \in A_V, d=1$. Phase 2 begins with the string B obtained by replacing all $M^d \in A_V$ with $B^d$, and halts after a predeterminsed number of iterations. At each iteration of both phases, the sum, D, of durations in the string remains constant.
+Production occurs in four phases of rulesets. A sentence is not considered well-formed until passing through all four phases. Roughly, these phases correspond to the generation of (1) form, (2) time signatures, (3) intra-measure beat patterns, and (4) recursive rhythmic subdivision. Having four separate rulesets, each with a well-defined purpose, allows us a great deal of flexibility without forcing us to overspecify. 
+
+Phase 1 begins with the string $X = M^l$ where $l=2^a, a \in N$, and halts with the string $A = \{ M^1 \}^*$.
+
+Phase 2 generates $B$ from $A$ by replacing each $M^1$ in $A$ with a symbol $ts \in TS$, where $TS$ is a nonempty set of time signature symbols.
+
+Phase 3 generates $C$ from $B$ by replacing each $ts$ in $B$ with a sequence of symbols from ${Beat, Dotted, QuarterDotted, Short}$ such that each sequence's duration sums to the duration of the time signature it replaces. For instance, the sequence $[B^frac{1}{2} D^frac{3}{8} B^frac{1}{8}]$ may validly be generated from \emph{FourFour} because $\frac{1}{2} + \frac{3}{8} + \frac{1}{8} = 1$; the sequence $[B^frac{1}{2} D^frac{3}{4}]$, however, may not be generated from the same symbol.
+
+Phase 4 generates the final string by repeatedly subdividing $C$. Rules in this phase operate within the duration-aware set ${Beat, Dotted, QuarterDotted, Short}$, and are constrained such that the durations of the right-hand side of a rule must sum to the duration of the left-hand side. This ensures that the total duration of $C$ is preserved.s
 
 % \subsection{Sentential Forms}
 
