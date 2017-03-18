@@ -211,7 +211,7 @@ Phase 1 begins with the string $X = M^l$ where $l=2^a, a \in N$, and halts with 
 
 Phase 2 generates $\beta$ from $\alpha$ by replacing each $M^1$ in $\alpha$ with a symbol $ts \in TS$, where $TS$ is a nonempty set of time signature symbols.
 
-Phase 3 generates $\gamma$ from $\beta$ by replacing each $ts$ in $\beta$ with a sequence of symbols from ${Beat, Dotted, QuarterDotted, Short}$ such that each sequence's duration sums to the duration of the time signature it replaces. For instance, the sequence $[B^frac{1}{2} D^frac{3}{8} B^frac{1}{8}]$ may validly be generated from \emph{FourFour} because $\frac{1}{2} + \frac{3}{8} + \frac{1}{8} = 1$; the sequence $[B^frac{1}{2} D^frac{3}{4}]$, however, may not be generated from the same symbol.
+Phase 3 generates $\gamma$ from $\beta$ by replacing each $ts$ in $\beta$ with a sequence of symbols from ${Beat, Dotted, QuarterDotted, Short}$ such that each sequence's duration sums to the duration of the time signature it replaces. For instance, the sequence $[B^\frac{1}{2} D^\frac{3}{8} B^\frac{1}{8}]$ may validly be generated from \emph{FourFour} because $\frac{1}{2} + \frac{3}{8} + \frac{1}{8} = 1$; the sequence $[B^\frac{1}{2} D^\frac{3}{4}]$, however, may not be generated from the same symbol.
 
 Phase 4 generates the final string by repeatedly subdividing $\gamma$. Rules in this phase operate within the duration-aware set ${Beat, Dotted, QuarterDotted, Short}$, and are constrained such that the durations of the right-hand side of a rule must sum to the duration of the left-hand side. This ensures that the total duration of $\gamma$ is preserved.
 
