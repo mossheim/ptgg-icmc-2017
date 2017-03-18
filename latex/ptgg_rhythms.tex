@@ -149,7 +149,7 @@ Work such as that of Lerdahl and Jackendoff \cite{gttm} and Temperley \cite{temp
 
 \subsection{Probabilistic Temporal Graph Grammars}
 
-A grammar is defined as a 4-tuple: $G= (N,T,R,S)$ where the alphabet $N\cup T$ comprises nonterminals, $N$, and terminals, $T$. $R$ is a set of rules of the form $x \in N \rightarrow (N \cup T)^{*}$ and $S \in N$ is the starting symbol. Terminals are symbols that only produce themselves, i.e. cannot be further altered, while nonterminals may produce any combination of terminals and nonterminals. The generative algorithm is similar to that of L-Systems: at each generative iteration of the grammar, starting with the single-symbol sequence of $X = S$, the appropriate rule $(x \rightarrow y) \in R$ is applied to each nonterminal symbol from left to right to produce a new sequence $X'$, which may contain more symbols than $X$. This process of iteration is called expansion, because the sequence length is a nondecreasing function of the number of iterations. The condition that production rules operate on individual symbols without knowledge of the surrounding symbols means that this definition also describes a Context-Free Grammar (CFG). Probabilistic context-free grammars (PCFGs) have more than one rule with the same left-hand side. Rules sharing the same left-hand side in a PCFG must have associated probabilities that sum to 1.0.
+A grammar is defined as a 4-tuple: $G = (N,T,R,S)$ where the alphabet $N \cup T$ comprises nonterminals, $N$, and terminals, $T$. $R$ is a set of rules of the form $x \in N \rightarrow (N \cup T)^{*}$ and $S \in N$ is the starting symbol. Terminals are symbols that only produce themselves, i.e. cannot be further altered, while nonterminals may produce any combination of terminals and nonterminals. The generative algorithm is similar to that of L-Systems: at each generative iteration of the grammar, starting with the single-symbol sequence of $X = S$, the appropriate rule $(x \rightarrow y) \in R$ is applied to each nonterminal symbol from left to right to produce a new sequence $X'$, which may contain more symbols than $X$. This process of iteration is called expansion, because the sequence length is a nondecreasing function of the number of iterations. The condition that production rules operate on individual symbols without knowledge of the surrounding symbols means that this definition also describes a Context-Free Grammar (CFG). Probabilistic context-free grammars (PCFGs) have more than one rule with the same left-hand side. Rules sharing the same left-hand side in a PCFG must have associated probabilities that sum to 1.0.
 
 Kulitta features a category of grammars called Probabilistic Temporal Graph Grammars\cite{quick2013farm, quick_thesis}, or PTGGs. PTGGs are essentially parameterized PCFG, where production rules are functions on parameters. Allowable functions on symbol parameters include simple conditional logic and let-in statements for variable creation and instantiation. These let-in statements allow the generation of repetitions, which are an important feature of rhythm in music.
 
@@ -159,8 +159,8 @@ Rules in PTGGs have the following format:
 $\;$ \\
 \begin{tabular}{ll}
 $x^p \rightarrow$ & $f_{1}(p)$ \\
-$\;$ & $ \vert \;  if \; cond(p) \; then \; f_{1}(p) \; else \; f_{2}(p)$ \\
-$\;$ & $\vert \; let \; x = f_{1}(p) \; in \; \{x \; | \; f_{i}(p)\}^{+}$ \\
+$\;$ & $ \vert \;  \textbf{if} \; cond(p) \; \textbf{then} \; f_{1}(p) \; \textbf{else} \; f_{2}(p)$ \\
+$\;$ & $\vert \; \textbf{let} \; x = f_{1}(p) \; \textbf{in} \; \{x \; | \; f_{i}(p)\}^{+}$ \\
 \end{tabular} $\;$ \\
 
 \noindent where each $f_{i}(p)$ indicates some function from parameter values to sequences of terminals and nonterminals and $cond(p)$ is a conditional test on the left-hand-side symbol's parameter (such as $p<2$).
@@ -218,7 +218,7 @@ $B^a \rightarrow \mathbb{X} \in \mathbb{Q}^{p}$ where
 
 $p > 0 , \forall x \in X: 0 < x \leq 1, \sum_{x \in X} x = 1$
 
-and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produced symbols. This allows me to define patterns of subdivision clearly and succinctly. For example, let two Phase 2 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$ and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a Short threshold of $\frac{1}{16}$:
+and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produced symbols. This allows us to define patterns of subdivision clearly and succinctly. For example, let two Phase 2 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$ and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a Short threshold of $\frac{1}{16}$:
 
 \bgroup
 \def\arraystretch{1.5}
