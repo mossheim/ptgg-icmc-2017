@@ -179,32 +179,34 @@ Durations are treated as both terminals and nonterminals of an infinite parametr
 \subsection{Nonterminals}
 
 The nonterminals of the grammar are $N={Measure, \; Beat}$. 
+
 The \emph{Beat} symbol represents a note with duration $2^n/m$ where $n$ and $m$ are integers with $n \geq 0$, $m \geq 1$; \emph{Measure} is the term used for a raw duration whose value is a positive integer. Measures only appear in the first phase of production and are replaced with Beats of duration 1.0 in the second phase. The reason for this distinction is twofold: first, it was desired that the second phase of production begin with a series of 1.0 durations; second, it allows the frequency of variable instantiation at the hypermetrical level to be controlled independently of that at the metrical level.
 
 
 \subsection{Terminals}
 
 The terminals used are $T={Dotted, \; Short}$.
+
 The \emph{Dotted} symbol represents a duration that, like a dotted note, lasts for $1.5$ times the value of its undotted value. It was chosen to be a terminal for convenience since any subdivision of a dotted value can also be articulated as a more complex subdivision of a longer duration. Short stands for a Beat which has been subdivided to the point where its duration is less than or equal to $1/2^n$ , where $n$ is an arbitrary and predetermined integer constant. This behavior is designed to mimic the limits of human performers’ rhythmic articulation. The notations Md, Bd, Sd, Dd will be used hereafter for Measures, Beats, Shorts, and Dotteds of duration d respectively.
 
 \subsection{Production Phases}
 
 Production occurs in four phases of rulesets. A sentence is not considered well-formed until passing through all four phases. Phase 1 begins with the string Md where$ d=2^a, a \in N$, and ends with the string $A \in K$. Letting $A_V$ be the set of all Md in A and all A’s variables, Phase 1 only halts when $\forall M^d \in A_V, d=1$. Phase 2 begins with the string B obtained by replacing all $M^d \in A_V$ with $B^d$, and halts after a predeterminsed number of iterations. At each iteration of both phases, the sum, D, of durations in the string remains constant.
 
-\subsection{Sentential Forms}
+% \subsection{Sentential Forms}
 
-[Needs work - may be worth cutting]
+% [Needs work - may be worth cutting]
 
-The set K of sentential forms of this PTGG is %, without considering parameter values, is
+% The set K of sentential forms of this PTGG is %, without considering parameter values, is
 
-$k \in K ::= M \; | k…k \; | \;  let \; x=k \; in \; k$
+% $k \in K ::= M \; | k…k \; | \;  let \; x=k \; in \; k$
 
-\noindent for the first phase and 
+% \noindent for the first phase and 
 
-$l \in L ::= B \; | \; ( S \; | \; Dl \; | \;  lD \; | \; l…l ) \; | \;  let \; y=l \; in\;  l$
+% $l \in L ::= B \; | \; ( S \; | \; Dl \; | \;  lD \; | \; l…l ) \; | \;  let \; y=l \; in\;  l$
 
-%\noindent for the second, where $x \in V$, $y \in W$, and $V,W$ are predefined sets of variables.
-\noindent for the second, where $x$ and $y$ are variable names.
+% %\noindent for the second, where $x \in V$, $y \in W$, and $V,W$ are predefined sets of variables.
+% \noindent for the second, where $x$ and $y$ are variable names.
 
 \subsection{Production Rules}
 
