@@ -207,7 +207,7 @@ Phase 2 generates $B$ from $A$ by replacing each $M^1$ in $A$ with a symbol $ts 
 
 Phase 3 generates $C$ from $B$ by replacing each $ts$ in $B$ with a sequence of symbols from ${Beat, Dotted, QuarterDotted, Short}$ such that each sequence's duration sums to the duration of the time signature it replaces. For instance, the sequence $[B^frac{1}{2} D^frac{3}{8} B^frac{1}{8}]$ may validly be generated from \emph{FourFour} because $\frac{1}{2} + \frac{3}{8} + \frac{1}{8} = 1$; the sequence $[B^frac{1}{2} D^frac{3}{4}]$, however, may not be generated from the same symbol.
 
-Phase 4 generates the final string by repeatedly subdividing $C$. Rules in this phase operate within the duration-aware set ${Beat, Dotted, QuarterDotted, Short}$, and are constrained such that the durations of the right-hand side of a rule must sum to the duration of the left-hand side. This ensures that the total duration of $C$ is preserved.s
+Phase 4 generates the final string by repeatedly subdividing $C$. Rules in this phase operate within the duration-aware set ${Beat, Dotted, QuarterDotted, Short}$, and are constrained such that the durations of the right-hand side of a rule must sum to the duration of the left-hand side. This ensures that the total duration of $C$ is preserved.
 
 % \subsection{Sentential Forms}
 
@@ -258,6 +258,8 @@ We use Haskell-based PTGG generation framework from Kulitta and the MIDI export 
 %%%%%%%%%%%%%%%%%%%%%%%%% Examples %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Examples}
+
+We now present three example passages generated from this grammar. First, we present an example in 4/4 demonstrating major features of the grammar implementation. Secondly, we show that the grammar easily extends to other time signatures with an example in 3/4. Finally, we demonstrate unusual but idiomatic possibilities with an example in mixed irregular meters.
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Learning %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
