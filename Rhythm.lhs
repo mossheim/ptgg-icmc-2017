@@ -1,4 +1,4 @@
-> module Final where
+> module PTGG_Rhythm where
 > import Euterpea
 > import Kulitta.PTGG
 > import System.Random
