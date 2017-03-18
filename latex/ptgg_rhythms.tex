@@ -116,7 +116,6 @@
     {\tt \href{mailto:author2@unt.edu}{author2@unt.edu}}}
 
 
-
 % ====================================================
 % =============== The document content starts here ===============
 % ====================================================
@@ -131,7 +130,6 @@
 
 We present an approach for generating passages of rhythm via the use of a probabilistic temporal graph grammar with rule sets that operate via recursive subdivision. This project is motivated by three factors: (1) the recognition that the literature on computer-generated rhythm is generally not as robust as those for melody and harmony; (2) my desire as a composer of avant-garde classical music to have more tools for computer-assisted composition; and (3) the hope that such an approach, having already produced compelling results for some styles of music, may provide insight into the structure of rhythms found in existing repertoires.
 \end{abstract}
-%
 
 \section{Introduction}\label{sec:introduction}
 
@@ -161,8 +159,7 @@ $\;$ & $ \vert \;  if \; cond(p) \; then \; f_{1}(p) \; else \; f_{2}(p)$ \\
 $\;$ & $\vert \; let \; x = f_{1}(p) \; in \; \{x \; | \; f_{i}(p)\}^{+}$ \\
 \end{tabular} $\;$ \\
 
-\noindent
-where each $f_{i}(p)$ indicates some function from parameter values to sequences of terminals and nonterminals and $cond(p)$ is a conditional test on the left-hand-side symbol's parameter (such as $p<2$).
+\noindent where each $f_{i}(p)$ indicates some function from parameter values to sequences of terminals and nonterminals and $cond(p)$ is a conditional test on the left-hand-side symbol's parameter (such as $p<2$).
 
 \section{A PTGG for Rhythm}
 
@@ -170,8 +167,8 @@ where each $f_{i}(p)$ indicates some function from parameter values to sequences
 
 In most PTGGs used by Kulitta, the alphabet consists of Roman numeral chord symbols parameterized by duration, and rules are \emph{duration preserving}, meaning that the right-hand side symbols divide up the duration of the left-hand symbol, typically by a power of two. This division always results in a string that has equal duration to the original symbol. A rule such as $I^{t} \rightarrow I^{t/2} V^{t/4} I^{t/4}$ indicates that a I-chord may be replaced by a I-V-I progression where the chord durations are $\frac{1}{2}$, $\frac{1}{4}$, and $\frac{1}{4}$ the durations of the original chord. This implies a general approach of beginning with a long duration and iteratively dividing it into progressively smaller durations; since one would typically like to have control over the exact duration of a generated composition, this is a reasonable approach.
 
+The grammar proposed here is based on the observation that many theories of Western counterpoint, including those of Fux, Schoenberg, and Schenker \cite{[TO-DO]}, treat rhythm as a hierarchy of nested structures, discuss metrical patterns such as anapest (short-short-long) in the same light regardless of the level of duration on which they occur, and regard small note values as elaborations or ornamentations of a less complex metrical pattern.
 
-The grammar proposed here is based on the observation that many theories of Western counterpoint, including those of Fux, Schoenberg, and Schenker \cite{[TO-DO]}, treat rhythm as a hierarchy of nested structures, discuss metrical patterns such as anapest (short-short-long) in the same light regardless of the level of duration on which they occur, and regard small note values as elaborations or ornamentations of a less complex metrical pattern. For the sake of focus the grammar is defined only for measures of $4/4$ meter, since many counterpoint treatises begin in—and sometimes never leave—this meter. 
 We also introduce the notion of \emph{production phases} into the PTGG framework to account for the need for different rules to take place at different granularities in the generative process.
 
 Durations are treated as both terminals and nonterminals of an infinite parametrized alphabet of duration types in a four-step generative process that first divides a “raw” duration, equal to a power of two, into a sequence of measures; second, these measures are transformed into whole note durations and subdivided further. Throughout the following sections, we use $1.0$ to represent the duration of a whole note.
@@ -248,10 +245,15 @@ I have presented an application of PTGGs to the topic of automated composition a
 [need more conclusion]
 
 \subsection{Future Work}
-	One clear choice would be to try introducing rhythmic concepts that this grammar cannot currently express. These include ties, rests, and triple (3/4) meter. The former two items suggest the introduction of more alphabet symbols: a Tied symbol, produced from a Beat or Short, could be interpreted as tied over from the previous note during playback. A Rest symbol could be similarly used to eliminate some articulated notes from the interpreted string. Adding compatibility for triple meter would imply reworking Dotted as a nonterminal symbol.
-	Another concept that seems to be missing from the current alphabet is that of an embellishment or ornamentation. Such symbols could add short note values before or after more metrically significant beats, and in so doing introduce a third level of metrical hierarchy. A separate way to approach this would be by allowing existing let-in structures in the string to be resolved during or between iterations, rather than at the end of the entire cycle. This would preserve high-level symmetry while allowing for small-scale variations.
-	With certain adaptations, the proposed grammar could generate rhythms in more contemporary styles: for instance, the composition of mixed-meter passages would require a reworking of the first, Measure-based production phase, and might be better generated additively as opposed to recursively. The grammar already supports the complex and nested tuplets which are often found in classical music of the 20th and 21st centuries, and by slackening the imposed constraint on constant total string duration, it might also be able to generate passages in free meter or “non-geometric” time.
+
+One clear choice would be to try introducing rhythmic concepts that this grammar cannot currently express. These include ties, rests, and triple (3/4) meter. The former two items suggest the introduction of more alphabet symbols: a Tied symbol, produced from a Beat or Short, could be interpreted as tied over from the previous note during playback. A Rest symbol could be similarly used to eliminate some articulated notes from the interpreted string. Adding compatibility for triple meter would imply reworking Dotted as a nonterminal symbol.
+
+Another concept that seems to be missing from the current alphabet is that of an embellishment or ornamentation. Such symbols could add short note values before or after more metrically significant beats, and in so doing introduce a third level of metrical hierarchy. A separate way to approach this would be by allowing existing let-in structures in the string to be resolved during or between iterations, rather than at the end of the entire cycle. This would preserve high-level symmetry while allowing for small-scale variations.
+
+With certain adaptations, the proposed grammar could generate rhythms in more contemporary styles: for instance, the composition of mixed-meter passages would require a reworking of the first, Measure-based production phase, and might be better generated additively as opposed to recursively. The grammar already supports the complex and nested tuplets which are often found in classical music of the 20th and 21st centuries, and by slackening the imposed constraint on constant total string duration, it might also be able to generate passages in free meter or “non-geometric” time.
+
 Another direction to explore is context sensitivity. In some cases, it might be helpful to know certain contextual details about a symbol such as: (1) its position within the measure, which typically determines its emphasis (downbeat vs. upbeat), (2) its position within the overall duration of the passage, and (3) whether the passage is increasing or decreasing in rhythmic activity. Otherwise, it is not possible to account for what Schoenberg termed “the tendency of the smallest notes” [10]—a contrapuntal phenomenon wherein shorter durations are used more frequently toward the end of a passage or phrase—without adding other constraints to the rule set.
+
 Finally, these variations and improvements could also be useful for interfacing my grammar with other automated composition algorithms that produce melodies, harmonies, and counterpoint, either by using its output as a blueprint or by including it in a “composition by committee” approach. In that case, it would be important to embed as much contextual and functional knowledge as possible into the alphabet and the symbol parameters so that other grammars and algorithms can make informed decisions. For example, the knowledge that a downbeat is tied over or that two halves of a phrase have some rhythmic symmetry could be interpreted by a harmonic composition algorithm to produce more contextually aware chord sequences.
 
 
