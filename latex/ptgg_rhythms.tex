@@ -183,11 +183,15 @@ Throughout the following sections, we use $1.0$ to represent the duration of a w
 
 \subsection{Nonterminals}
 
+% TODO: put Dotted, QuarterDotted in nonterminals group
+
 The nonterminals of the grammar are $N={Beat, Measures} \cup TS$ where $TS$ is a set of \emph{time signature symbols}. 
 
 The \emph{Beat} symbol represents a note with duration $2^n/m$ where $n$ and $m$ are integers with $n \geq 0$, $m \geq 1$. \emph{Measures} represents a nonzero length of consecutive measures; each measure has nonzero duration but has not yet been assigned a time signature. That assignation is handled through \emph{time signature symbols} such as \emph{FourFour}, \emph{ThreeFour}, and \emph{SixEight}. Any time signature that could appear in the final output must be included as a symbol in $TS$.
 
 \subsection{Terminals}
+
+% TODO: put Dotted, QuarterDotted in nonterminals group
 
 The terminals used are $T={Dotted, QuarterDotted, Short}$.
 
@@ -198,6 +202,8 @@ The \emph{Dotted} symbol represents a duration analogous to a dotted note; it la
 The notations $B^d$, $S^d$, $D^d$, $Q^d$ will be used hereafter for $Beat$, $Short$, $Dotted$, and $QuarterDotted$ symbols of duration $d$ respectively. Since a $Measures$ symbol does not have duration, but rather length, we use the notation $M^l$ for a \emph{Measures} of length $l$.
 
 \subsection{Production Phases}
+
+% TODO: is this clear enough?
 
 Production occurs in four phases of rulesets. A sentence is not considered well-formed until passing through all four phases. Roughly, these phases correspond to the generation of (1) form, (2) time signatures, (3) intra-measure beat patterns, and (4) recursive rhythmic subdivision. Having four separate rulesets, each with a well-defined purpose, allows us a great deal of flexibility without forcing us to overspecify. 
 
@@ -253,7 +259,9 @@ and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produc
 
 We use Haskell-based PTGG generation framework from Kulitta and the MIDI export capabilities offered by the Euterpea library \cite{euterpea} to allow for elegant rule definition and parsing. Below are some of the key features of this implementation.
 
-\subsection{Four-Phase Generation Algorithm} 
+\subsection{Four-Phase Generation Algorithm}
+
+[TODO]
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Examples %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -261,9 +269,13 @@ We use Haskell-based PTGG generation framework from Kulitta and the MIDI export 
 
 We now present three example passages generated from this grammar. First, we present an example in 4/4 demonstrating major features of the grammar implementation. Secondly, we show that the grammar easily extends to other time signatures with an example in 3/4. Finally, we demonstrate unusual but idiomatic possibilities with an example in mixed irregular meters.
 
+[TODO]
+
 %%%%%%%%%%%%%%%%%%%%%%%%% Learning %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Learning}
+
+[TODO]
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Conclusion %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -271,9 +283,11 @@ We now present three example passages generated from this grammar. First, we pre
 
 I have presented an application of PTGGs to the topic of automated composition along the sole parameter of rhythm. I detailed one implementation of such a grammar and examined a sample of its output. The grammar shown above is a preliminary attempt, and there are some possible routes for its extension. 
 
-[need more conclusion]
+[TODO: need more conclusion]
 
 \subsection{Future Work}
+
+[TODO: rewrite]
 
 One clear choice would be to try introducing rhythmic concepts that this grammar cannot currently express. These include ties, rests, and triple (3/4) meter. The former two items suggest the introduction of more alphabet symbols: a Tied symbol, produced from a Beat or Short, could be interpreted as tied over from the previous note during playback. A Rest symbol could be similarly used to eliminate some articulated notes from the interpreted string. Adding compatibility for triple meter would imply reworking Dotted as a nonterminal symbol.
 
