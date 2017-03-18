@@ -21,14 +21,14 @@ The main symbol is `Beat`, which is any even subdivision of a measure (half, qua
 `QuarterDotted` is a Beat with 5/4 the duration
 `Short` is a Beat which has reached the maximum power of two and cannot be further subdivided (convenience)
 
-> data RTerm = Measure | 
+> data RTerm = Measures |
 >              FourFour | ThreeFour | TwoFour | SixEight | NineEight | 
 >              FiveEight | ThirteenSixteen | FifteenSixteen | SevenEight |
 >              --CustomMeasure Int Int |
 >              Beat | Dotted | Short | QuarterDotted
 >     deriving (Eq, Ord, Enum, Read, Show)
 
-> allRTerms = [Measure, FourFour, ThreeFour, TwoFour, SixEight, NineEight, FiveEight, ThirteenSixteen, FifteenSixteen, SevenEight, Beat, Dotted, Short, QuarterDotted]
+> allRTerms = [Measures, FourFour, ThreeFour, TwoFour, SixEight, NineEight, FiveEight, ThirteenSixteen, FifteenSixteen, SevenEight, Beat, Dotted, Short, QuarterDotted]
 
 -------------------------------------------
 -----------PARAMETER DEFINITIONS-----------
@@ -37,7 +37,7 @@ Three parameters:
   power and ratio: the duration of the beat is 1/2^power*ratio. Ratio is usually 1, unless the
     Beat is within a tuplet in which case it becomes <written number of beats in tuplet>/<actual duration of tuplet>
     Thus a triplet has ratio 2/3, a quintuplet ratio 4/5
-  measures: determines the length of a Measure object during the initial phase of generation and is not used for any
+  measures: determines the length of a Measures object during the initial phase of generation and is not used for any
   final calculations (should always end up =1)
 
 > data Param = Param {power :: Int, measures :: Int, ratio :: Rational}
@@ -120,20 +120,20 @@ The rules for `measure generation` determine what measures will be tied together
 
 > mRules :: Prob -> [Rule RTerm Param]
 > mRules letChance = if (letChance < 0.0) || (letChance > 1.0) then error "mRules: Chance is not within 0.0-1.0" else [
->     (Measure, 1-letChance) :-> \p -> if (measures p > 1) then [NT (Measure, halveMeasures p), NT (Measure, halveMeasures p)] else [NT (Measure, p)],
->     (Measure, letChance) :-> \p -> if (measures p > 1) then [Let "x" [NT (Measure, halveMeasures p)] [Var "x", Var "x"]] else [NT (Measure, p)]]
+>     (Measures, 1-letChance) :-> \p -> if (measures p > 1) then [NT (Measures, halveMeasures p), NT (Measures, halveMeasures p)] else [NT (Measures, p)],
+>     (Measures, letChance) :-> \p -> if (measures p > 1) then [Let "x" [NT (Measures, halveMeasures p)] [Var "x", Var "x"]] else [NT (Measures, p)]]
 
 Rules for time signature generation. Assumes max PoT is not violated here.
 
 > tRules :: Bool -> [Rule RTerm Param]
 > tRules useLets = normalize ([
->   (Measure, 1.0) :-> \p -> [NT (FourFour, p)], -- 3/4
->   (Measure, 0.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
->   (Measure, 0.0) :-> \p -> [NT (NineEight, p)], -- 9/8
->   (Measure, 0.0) :-> \p -> [NT (FiveEight, p)], -- 5/8
->   --(Measure, 1.0) :-> \p -> [NT (ThirteenSixteen, p)], -- 13/16
->   (Measure, 0.0) :-> \p -> [NT (FifteenSixteen, p)], -- 15/16
->   (Measure, 0.0) :-> \p -> [NT (SevenEight, p)] -- 7/8
+>   (Measures, 1.0) :-> \p -> [NT (FourFour, p)], -- 3/4
+>   (Measures, 0.0) :-> \p -> [NT (ThreeFour, p)], -- 3/4
+>   (Measures, 0.0) :-> \p -> [NT (NineEight, p)], -- 9/8
+>   (Measures, 0.0) :-> \p -> [NT (FiveEight, p)], -- 5/8
+>   --(Measures, 1.0) :-> \p -> [NT (ThirteenSixteen, p)], -- 13/16
+>   (Measures, 0.0) :-> \p -> [NT (FifteenSixteen, p)], -- 15/16
+>   (Measures, 0.0) :-> \p -> [NT (SevenEight, p)] -- 7/8
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >   --let rules go here
@@ -226,7 +226,7 @@ Rules for rhythmic subdivision.
 Generation: fullGen s i m : s is the gen seed, i is the iteration to draw from, m is the length in measures (must be a multiple of two)
 
 > mGen :: Int -> Int -> Int -> Double -> Sentence RTerm Param
-> mGen s i m p = snd $ gen (mRules p) (mkStdGen s, [NT (Measure, Param 0 m 1)]) !! i
+> mGen s i m p = snd $ gen (mRules p) (mkStdGen s, [NT (Measures, Param 0 m 1)]) !! i
 
 > tGen :: Int -> Bool -> Sentence RTerm Param -> Sentence RTerm Param
 > tGen s ul terms = snd $ gen (tRules ul) (mkStdGen s, terms) !! 1 -- only need 1 cycle for time sig conversion
@@ -316,5 +316,5 @@ This is the most convenient method to use here: s1 and s2 are the seeds for rule
 i, m, and p are the index, length in measures, and Let-probability during measure gen
 
 > randomRulesGen s1 s2 i m p = toPairs $ snd $ gen (randomRules s1) ms !! i where
->                              ms = gen (mRules p) (mkStdGen s2, [NT (Measure, Param 0 m 1)]) !! (log2Floor $ fromIntegral m)
+>                              ms = gen (mRules p) (mkStdGen s2, [NT (Measures, Param 0 m 1)]) !! (log2Floor $ fromIntegral m)
 
