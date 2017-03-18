@@ -131,6 +131,8 @@
 We present an approach for generating passages of rhythm via the use of a probabilistic temporal graph grammar with rule sets that operate via recursive subdivision. This project is motivated by three factors: (1) the recognition that the literature on computer-generated rhythm is generally not as robust as those for melody and harmony; (2) my desire as a composer of avant-garde classical music to have more tools for computer-assisted composition; and (3) the hope that such an approach, having already produced compelling results for some styles of music, may provide insight into the structure of rhythms found in existing repertoires.
 \end{abstract}
 
+%%%%%%%%%%%%%%%%%%%%%%%%% Introduction %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Introduction}\label{sec:introduction}
 
 [To-Do]
@@ -162,6 +164,8 @@ $\;$ & $\vert \; let \; x = f_{1}(p) \; in \; \{x \; | \; f_{i}(p)\}^{+}$ \\
 \end{tabular} $\;$ \\
 
 \noindent where each $f_{i}(p)$ indicates some function from parameter values to sequences of terminals and nonterminals and $cond(p)$ is a conditional test on the left-hand-side symbol's parameter (such as $p<2$).
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Grammar %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{A PTGG for Rhythm}
 
@@ -230,15 +234,23 @@ and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produc
 \end{center}
 \egroup
 
+%%%%%%%%%%%%%%%%%%%%%%%%% Implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Implementation}
 
 We use Haskell-based PTGG generation framework from Kulitta and the MIDI export capabilities offered by the Euterpea library \cite{euterpea} to allow for elegant rule definition and parsing. Below are some of the key features of this implementation.
 
 \subsection{Four-Phase Generation Algorithm} 
 
+%%%%%%%%%%%%%%%%%%%%%%%%% Examples %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[TO-DO COPY REST OVER]
+\section{Examples}
 
+%%%%%%%%%%%%%%%%%%%%%%%%% Learning %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Learning}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Conclusion %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Conclusion}
 
@@ -257,7 +269,6 @@ With certain adaptations, the proposed grammar could generate rhythms in more co
 Another direction to explore is context sensitivity. In some cases, it might be helpful to know certain contextual details about a symbol such as: (1) its position within the measure, which typically determines its emphasis (downbeat vs. upbeat), (2) its position within the overall duration of the passage, and (3) whether the passage is increasing or decreasing in rhythmic activity. Otherwise, it is not possible to account for what Schoenberg termed “the tendency of the smallest notes” [10]—a contrapuntal phenomenon wherein shorter durations are used more frequently toward the end of a passage or phrase—without adding other constraints to the rule set.
 
 Finally, these variations and improvements could also be useful for interfacing my grammar with other automated composition algorithms that produce melodies, harmonies, and counterpoint, either by using its output as a blueprint or by including it in a “composition by committee” approach. In that case, it would be important to embed as much contextual and functional knowledge as possible into the alphabet and the symbol parameters so that other grammars and algorithms can make informed decisions. For example, the knowledge that a downbeat is tied over or that two halves of a phrase have some rhythmic symmetry could be interpreted by a harmonic composition algorithm to produce more contextually aware chord sequences.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
