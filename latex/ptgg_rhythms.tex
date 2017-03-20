@@ -183,37 +183,38 @@ Throughout the following sections, we use $1.0$ to represent the duration of a w
 
 \subsection{Nonterminals}
 
-% TODO: put Dotted, QuarterDotted in nonterminals group
+The nonterminals of the grammar are $N=\{Beat,\allowbreak Dotted,\allowbreak QuarterDotted,\allowbreak Measures \} \cup TS$ where $TS$ is a set of \emph{time signature symbols}. 
 
-The nonterminals of the grammar are $N={Beat, Measures} \cup TS$ where $TS$ is a set of \emph{time signature symbols}. 
 
-The \emph{Beat} symbol represents a note with duration $2^n/m$ where $n$ and $m$ are integers with $n \geq 0$, $m \geq 1$. \emph{Measures} represents a nonzero length of consecutive measures; each measure has nonzero duration but has not yet been assigned a time signature. That assignation is handled through \emph{time signature symbols} such as \emph{FourFour}, \emph{ThreeFour}, and \emph{SixEight}. Any time signature that could appear in the final output must be included as a symbol in $TS$.
+The \emph{Beat} symbol represents a note with duration $2^n/m$ where $n$ and $m$ are integers with $n \geq 0$, $m \geq 1$. The \emph{Dotted} symbol represents a duration analogous to a dotted note; it lasts $1.5$ times its undotted value. Similarly, a \emph{QuarterDotted} lasts for $1.25$ times its undotted value. Although the notion of a "quarter dotted" note has no counterpart in common practice notation (although some composers such as George Crumb have invented their own symbols for it), a duration of $\frac{5}{8}$ is found frequently in situations where, for example, a quarter note is tied to the first of a series of sixteenth notes. Because the grammar has no way to represent ties, this symbol is included for robustness.
+
+One could argue that, for the sake of completion, symbols for $\frac{7}{8}$, $\frac{9}{8}$, and so on ought also to be defined. We have chosen to forego defining these symbols because (1) their durations occur less frequently than $\frac{3}{8}$ and $\frac{5}{8}$, (2) we are still able to express a wide variety of rhythms without them, (3) there are other, more elegant routes to the same solution (see Future Work).
+
+% It was chosen to be a terminal for convenience, since any subdivision of a dotted value can also be articulated as a more complex subdivision of a longer duration.
+
+\emph{Measures} represents a nonzero length of consecutive measures; each measure has nonzero duration but has not yet been assigned a time signature. $TS$ is the set of time signatures that may appear in the final output; symbols in $TS$ are named for the meters they represent: \emph{FourFour}, \emph{ThreeFour}, \emph{SixEight}, and so on.
 
 \subsection{Terminals}
 
-% TODO: put Dotted, QuarterDotted in nonterminals group
-
-The terminals used are $T={Dotted, QuarterDotted, Short}$.
-
-The \emph{Dotted} symbol represents a duration analogous to a dotted note; it lasts $1.5$ times its undotted value. It was chosen to be a terminal for convenience, since any subdivision of a dotted value can also be articulated as a more complex subdivision of a longer duration. Similarly, a \emph{QuarterDotted} lasts for $1.25$ times its undotted value. Although this symbol is not typically found in common practice notation, a duration of $\frac{5}{8}$ is found frequently in situations where, for example, a quarter note is tied to the first of a series of sixteenth notes. Because the grammar has no way to represent ties, this symbol is included for robustness. One could argue that, for the sake of completion, symbols for $\frac{7}{8}$, $\frac{9}{8}$, and so on ought also to be defined. We have chosen to forego defining these symbols because (1) their durations occur less frequently than $\frac{3}{8}$ and $\frac{5}{8}$, (2) we are still able to express a wide variety of rhythms without them, (3) there are other, more elegant routes to the same solution (see Future Work).
+The sole terminal is $T={Short}$.
 
 \emph{Short} stands for a \emph{Beat} which has been subdivided to the point where its duration is less than or equal to $1/2^n$, where $n$ is an arbitrary integer constant. Intuitively, a very short note is prevented from being further subdivided. This behavior is designed to mimic the limits of human performers’ rhythmic articulation.
 
-The notations $B^d$, $S^d$, $D^d$, $Q^d$ will be used hereafter for $Beat$, $Short$, $Dotted$, and $QuarterDotted$ symbols of duration $d$ respectively. Since a $Measures$ symbol does not have duration, but rather length, we use the notation $M^l$ for a \emph{Measures} of length $l$.
+The notations $B^d$, $S^d$, $D^d$, $Q^d$ will be used hereafter for $Beat$, $Short$, $Dotted$, and $QuarterDotted$ symbols of duration $d$ respectively. Since a $Measures$ symbol does not have duration, but rather length, we use the notation $M^l$ for \emph{Measures} of length $l$.
 
 \subsection{Production Phases}
 
 % TODO: is this clear enough?
 
-Production occurs in four phases of rulesets. A sentence is not considered well-formed until passing through all four phases. Roughly, these phases correspond to the generation of (1) form, (2) time signatures, (3) intra-measure beat patterns, and (4) recursive rhythmic subdivision. Having four separate rulesets, each with a well-defined purpose, allows us a great deal of flexibility without forcing us to overspecify. 
+Production occurs in four phases of rulesets. A sentence is not considered well-formed until passing through all four phases. Practically, these phases correspond to the generation of (1) phrase structure, (2) time signatures, (3) intra-measure beat patterns, and (4) recursive rhythmic subdivision. Having four separate rulesets, each with a well-defined purpose, allows us a great deal of flexibility without forcing us to overspecify.
 
-Phase 1 begins with the string $X = M^l$ where $l=2^a, a \in N$, and halts with the string $\alpha = \{ M^1 \}^*$.
+Phase 1 begins with the string $\alpha = M^l$ where $l=2^a, a \geq 0$, and halts with the string $\beta = \{ M^1 \}^*, |\beta| = l$.
 
-Phase 2 generates $\beta$ from $\alpha$ by replacing each $M^1$ in $\alpha$ with a symbol $ts \in TS$, where $TS$ is a nonempty set of time signature symbols.
+Phase 2 generates $\gamma$ from $\beta$ by replacing each $M^1$ in $\beta$ with a symbol $ts \in TS$, where $TS$ is a nonempty set of time signature symbols.
 
-Phase 3 generates $\gamma$ from $\beta$ by replacing each $ts$ in $\beta$ with a sequence of symbols from ${Beat, Dotted, QuarterDotted, Short}$ such that each sequence's duration sums to the duration of the time signature it replaces. For instance, the sequence $[B^\frac{1}{2} D^\frac{3}{8} B^\frac{1}{8}]$ may validly be generated from \emph{FourFour} because $\frac{1}{2} + \frac{3}{8} + \frac{1}{8} = 1$; the sequence $[B^\frac{1}{2} D^\frac{3}{4}]$, however, may not be generated from the same symbol.
+Phase 3 generates $\delta$ from $\gamma$ by replacing each $ts$ in $\gamma$ with a sequence of symbols from $\{Beat,\allowbreak Dotted,\allowbreak QuarterDotted,\allowbreak Short \}$ such that each sequence's duration sums to the duration of the time signature it replaces. For instance, the sequence $[B^\frac{1}{2} D^\frac{3}{8} B^\frac{1}{8}]$ may validly be generated from \emph{FourFour} because $\frac{1}{2} + \frac{3}{8} + \frac{1}{8} = 1$; the sequence $[B^\frac{1}{2} D^\frac{3}{4}]$, however, may not be generated from \emph{FourFour}.
 
-Phase 4 generates the final string by repeatedly subdividing $\gamma$. Rules in this phase operate within the duration-aware set ${Beat, Dotted, QuarterDotted, Short}$, and are constrained such that the durations of the right-hand side of a rule must sum to the duration of the left-hand side. This ensures that the total duration of $\gamma$ is preserved.
+Phase 4 generates the output string by repeatedly subdividing $\delta$. Rules in this phase operate within the duration-parametrized set $\{Beat,\allowbreak Dotted,\allowbreak QuarterDotted,\allowbreak Short\}$. In order to preserve the duration of $\delta$, rules are constrained such that the durations of the right-hand side of a rule must sum to the duration of the left-hand side.
 
 % TODO: decide whether or not to keep this section
 
@@ -240,7 +241,7 @@ $B^a \rightarrow \mathbb{X} \in \mathbb{Q}^{p}$ where
 
 $p > 0 , \forall x \in X: 0 < x \leq 1, \sum_{x \in X} x = 1$
 
-and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produced symbols. This allows us to define patterns of subdivision clearly and succinctly. For example, let two Phase 2 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$ and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a Short threshold of $\frac{1}{16}$:
+and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produced symbols. This allows us to define patterns of subdivision clearly and succinctly. For example, let two Phase 4 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$ and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a \emph{Short} threshold of $\frac{1}{16}$:
 
 \bgroup
 \def\arraystretch{1.5}
@@ -249,8 +250,8 @@ and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produc
  Rule & String \\
  \hline
  (start)                                                  & $B^{1}$ \\
- $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$               & $D^{3/4} B^{1/4}$ \\
- $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$  & $D^{\frac{3}{4}} B^{1/8} S^{1/16} S^{1/16}$ \\
+ $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$               & $D^{\frac{3}{4}} B^{\frac{1}{4}}$ \\
+ $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$  & $D^{\frac{3}{4}} B^{\frac{1}{8}} S^{\frac{1}{16}} S^{\frac{1}{16}}$ \\
 \end{tabular}
 \end{center}
 \egroup
