@@ -11,6 +11,10 @@
 \usepackage[english]{babel}
 %\usepackage{cite}
 \usepackage{amsfonts}
+%\usepackage{todonotes}
+
+\newcommand{\hilite}[1]{\colorbox{yellow}{#1}}
+\long\def\todo#1{\hilite{{\bf TODO:} {\em #1}}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -126,6 +130,7 @@
 \capstarttrue
 %
 \begin{abstract}
+
 [Will need to be tweaked at the end to reflect any additions, but the original intro seems like a good fit here at the moment]
 
 We present an approach for generating passages of rhythm via the use of a probabilistic temporal graph grammar with rule sets that operate via recursive subdivision. This project is motivated by three factors: (1) the recognition that the literature on computer-generated rhythm is generally not as robust as those for melody and harmony; (2) my desire as a composer of avant-garde classical music to have more tools for computer-assisted composition; and (3) the hope that such an approach, having already produced compelling results for some styles of music, may provide insight into the structure of rhythms found in existing repertoires.
@@ -135,7 +140,9 @@ We present an approach for generating passages of rhythm via the use of a probab
 
 \section{Introduction}\label{sec:introduction}
 
-[To-Do]
+There has been extensive work in the areas of analyzing and generating pitch-related features in music such as melody and harmony. However, rhythmic structure has received substantially less attention, particularly in the area of automated composition. Typically generated rhythms a either very simple, such as those found in Bach chorales, or they struggle to retain a sense of meter. 
+
+We present a grammatical approach to generating diverse rhythmic patterns in multiple time signatures while preserving hypermetrical structures. Our approach also allows the generation of repeated patterns at multiple levels of granularity, an extremely important feature of rhythm in music. Finally, the probabilistic grammars described here also have the potential for rule probabilities to be derived from real musical examples.
 
 \subsection{Related Work}
 
@@ -143,9 +150,11 @@ One of the most commonly applied algorithms in computer music analysis and gener
 
 Some extensions to Markov chains exist that can overcome some of the problems of preserving metrical structure observed with more traditional approaches. Roy and Pachet model meter in melodic generation \cite{roy2013} using and extension known as Markov constraints \cite{pachet2011} to achieve properties such as properly filled measures. This method involves enumeration of possible outcomes for metrical constraints, although the complexity is mitigated to some extent by a filtering step to avoid a truly brute force search.
 
-Work such as that of Lerdahl and Jackendoff \cite{gttm} and Temperley \cite{temperley2010} presents a statistical view of metrical structure, where metrical positions are assigned a probability distribution and downbeats are weighted more heavily. While these models are useful analytically and can be used to generate new rhythmic patterns, as with Markov chains, there is no support for modeling repetition, and relatively common, syncopated rhythmic patterns are unlikely due to having little downbeat content. 
+Work such as that of Lerdahl and Jackendoff \cite{gttm}, as well as the work of Temperley \cite{temperley2010}, presents a statistical view of metrical structure, where metrical positions are assigned a probability distribution and downbeats are weighted more heavily. While these models are useful analytically and can be used to generate new rhythmic patterns, as with Markov chains, there is no support for modeling repetition, and relatively common, syncopated rhythmic patterns are unlikely due to having little downbeat content. 
 
-[NEED TO ADD SOME MORE]
+Keller and Morrison present a grammatical model for jazz solos that includes a rhythmic component. This grammar is context-free and generates rhythmic structure independently of melodic structure. The rhythmic portion of the grammar is fundamentally based on dividing times in half. Although some degree of syncopation is supported, the strategy of halving durations through much of the generation fundamentally limits it to duple meters. The grammars we introduce in later sections of this paper use a tiered, multi-rule-set approach that supports many other time signatures. 
+
+\todo{Maybe cite other things if there is space}
 
 \subsection{Probabilistic Temporal Graph Grammars}
 
@@ -198,7 +207,7 @@ One could argue that, for the sake of completion, symbols for $\frac{7}{8}$, $\f
 
 The sole terminal is $T={Short}$.
 
-\emph{Short} stands for a \emph{Beat} which has been subdivided to the point where its duration is less than or equal to $1/2^n$, where $n$ is an arbitrary integer constant. Intuitively, a very short note is prevented from being further subdivided. This behavior is designed to mimic the limits of human performers’ rhythmic articulation.
+\emph{Short} stands for a \emph{Beat} which has been subdivided to the point where its duration is less than or equal to $1/2^n$, where $n$ is an arbitrary integer constant. Intuitively, a very short note is prevented from being further subdivided. This behavior is designed to mimic the limits of human performers? rhythmic articulation.
 
 The notations $B^d$, $S^d$, $D^d$, $Q^d$ will be used hereafter for $Beat$, $Short$, $Dotted$, and $QuarterDotted$ symbols of duration $d$ respectively. Since a $Measures$ symbol does not have duration, but rather length, we use the notation $M^l$ for \emph{Measures} of length $l$.
 
@@ -224,11 +233,11 @@ Phase 4 generates the output string by repeatedly subdividing $\delta$. Rules in
 
 % The set K of sentential forms of this PTGG is %, without considering parameter values, is
 
-% $k \in K ::= M \; | k…k \; | \;  let \; x=k \; in \; k$
+% $k \in K ::= M \; | k?k \; | \;  let \; x=k \; in \; k$
 
 % \noindent for the first phase and 
 
-% $l \in L ::= B \; | \; ( S \; | \; Dl \; | \;  lD \; | \; l…l ) \; | \;  let \; y=l \; in\;  l$
+% $l \in L ::= B \; | \; ( S \; | \; Dl \; | \;  lD \; | \; l?l ) \; | \;  let \; y=l \; in\;  l$
 
 % %\noindent for the second, where $x \in V$, $y \in W$, and $V,W$ are predefined sets of variables.
 % \noindent for the second, where $x$ and $y$ are variable names.
@@ -241,7 +250,7 @@ $B^a \rightarrow \mathbb{X} \in \mathbb{Q}^{p}$ where
 
 $p > 0 , \forall x \in X: 0 < x \leq 1, \sum_{x \in X} x = 1$
 
-and then use the resulting parameters $[d_1,d_2,…,d_p]=aX$ to label the produced symbols. This allows us to define patterns of subdivision clearly and succinctly. For example, let two Phase 4 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$ and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a \emph{Short} threshold of $\frac{1}{16}$:
+and then use the resulting parameters $[d_1,d_2,?,d_p]=aX$ to label the produced symbols. This allows us to define patterns of subdivision clearly and succinctly. For example, let two Phase 4 rules be $B \rightarrow [\frac{3}{4}, \frac{1}{4}]$ and $B \rightarrow [\frac{1}{2}, \frac{1}{4}, \frac{1}{4}]$. Here are two iterations of production using these rules and a \emph{Short} threshold of $\frac{1}{16}$:
 
 \bgroup
 \def\arraystretch{1.5}
@@ -264,7 +273,15 @@ We use Haskell-based PTGG generation framework from Kulitta and the MIDI export 
 
 \subsection{Four-Phase Generation Algorithm}
 
-[TODO]
+Assuming the rule sets have already been defined, the complete generation algorithm requires four parameters: (1) the total length $l = 2^n$, $n > 0$, of the passage in measures; (2) the shortest allowable duration $1/{2^n}$ expressed as $n$; (3) the number of Phase 4 iterations to perform; and (4) a random seed.
+
+As stated above, generation begins with the string $\alpha = M^l$. Phase 1, phrase structure generation, uses only two rules: $M^l \rightarrow M^\frac{l}{2} M^\frac{l}{2}$ and $\textbf{let} x = M^\frac{d}{2} \textbf{in} x x$. Both rules subdivide the group of measures into two equal halves, but one does so through variable instantiation. Since $l$ is a power of two, Phase 1 halts in $log_2 m$ iterations.
+
+In Phase 2, time signature assignment, each measure is assigned a time signature from the set $TS$. Since most pieces of common practice music are in a single time signature, this step is trivial and will only consist of one rule $M \rightarrow ts$.
+
+In Phase 3, beat pattern assignment, each time signature symbol is replaced with a sequence of beats that sum to the duration of that meter. An example Phase 3 rule might be $FourFour \rightarrow B^\frac{1}{2} B^\frac{1}{2}$, which divides a 4/4 measure into two independent halves. This Phase may also be trivial for generating common practice passages, but for complex or irregular time signatures such as 7/8, explicitly defining the abstract beat pattern ? as $2 + 2 + 3$, or $3 + 2 + 2$, or even a mix of both ? in a separate phase of generation is helpful.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Examples %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -272,19 +289,50 @@ We use Haskell-based PTGG generation framework from Kulitta and the MIDI export 
 
 We now present three example passages generated from this grammar. First, we present an example in 4/4 demonstrating major features of the grammar implementation. Secondly, we show that the grammar easily extends to other time signatures with an example in 3/4. Finally, we demonstrate unusual but idiomatic possibilities with an example in mixed irregular meters.
 
-[TODO]
+\todo{FINISH SECTION}
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Learning %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Learning}
+\section{Learning Production Probabilities}
 
-[TODO]
+An algorithm for deriving production probabilities from a training corpus has been described for probabilistic temporal graph grammars \cite{kulitta_learning}, and is part of the Kulitta framework. This learning method is based on the inside-outside algorithm\cite{lari1990}, which, in turn, is a tree generalization of the more commonly used forward-backward algorithm for hidden Markov models.
 
-\begin{figure}[h]
+Kulitta's production probability learning-strategy is oracle-based, allowing PTGG for which the oracle can be defined concretely to have production probabilities estimated from real data. This strategy also supports PTGGs with rules that feature let-in expressions and conditional statements. The oracle must be able to identify candidate parent symbols that may have produced mixed sequences of terminals and nonterminals. 
+
+For the PTGGs described in this paper, the learning oracle is simple to define because all of the rules are \emph{duration preserving}. A rule can be tested against a sequence of symbols by normalizing the durations of the input sequence to sum to 1.0 and comparing against symbol parameters in the rule. For example, the sequence $B^{2}B^{2}$, which normalizes to $B \rightarrow B^\frac{1}{2} B^\frac{1}{2}$ can clearly be produced by the rule $B \rightarrow B^\frac{1}{2} B^\frac{1}{2}$, but $B^{1} B^{2}$ cannot. 
+
+As a proof of concept, we tested a reduced rule set using a small collection of rhythmic patterns from Bach cantatas. The production probabilities derived from this experiment are shown in Table \ref{simplerules}, and example rhythms generated from the learned model are shown in Figure \ref{learninggen}.
+
+%  [0.8510911736306143,4.426342216253392e-3,2.9856772830154275e-2,2.3793216219438296e-3,7.110892668979364e-2,1.0e-2,1.0e-2,1.0e-2]
+\begin{table}
 \centering
-\includegraphics[width=0.9\columnwidth]{Chorale_443576165_minor.pdf}
-\caption{Some caption}
-\end{figure}
+\begin{tabular}{ll}
+0.851 & $B \rightarrow B^\frac{1}{2} B^\frac{1}{2}$\\
+0.004 & $B \rightarrow B^\frac{1}{2} B^\frac{1}{4} B^\frac{1}{4}$\\
+0.030 & $B \rightarrow B^\frac{1}{4} B^\frac{1}{2} B^\frac{1}{4}$\\ 
+0.002 & $B \rightarrow B^\frac{1}{4} B^\frac{1}{4} B^\frac{1}{2}$\\ 
+0.071 & $B \rightarrow D^\frac{3}{4} B^\frac{1}{4}$\\
+0.010 & $B \rightarrow B^\frac{1}{4} D^\frac{3}{4}$\\
+0.010 & $B \rightarrow B^\frac{1}{4} B^\frac{1}{4} B^\frac{1}{4} B^\frac{1}{4}$\\
+0.010 & $B \rightarrow B^\frac{1}{3} B^\frac{1}{3} B^\frac{1}{3}$\\ 
+\end{tabular}
+\caption{Rule set with probabilities derived from training on examples of rhythms from Bach cantatas.}\label{simplerules}
+\end{table}
+
+\begin{figure*}[t] % NEEDS REPLACING BUT DEMOS MULTI-COLUMN SPAN
+\centering
+\includegraphics[width=16cm]{bach_output.pdf}
+\caption{Examples of rhythms generated from the grammar in Table \ref{simplerules}, the probabilities for which were derived from a small number of Bach cantata excerpts.}\label{learninggen}
+\end{figure*}
+
+%\begin{figure}[h]
+%\centering
+%\includegraphics[width=0.9\columnwidth]{Chorale_443576165_minor.pdf}
+%\caption{Some caption}
+%\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Conclusion %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -292,21 +340,21 @@ We now present three example passages generated from this grammar. First, we pre
 
 I have presented an application of PTGGs to the topic of automated composition along the sole parameter of rhythm. I detailed one implementation of such a grammar and examined a sample of its output. The grammar shown above is a preliminary attempt, and there are some possible routes for its extension. 
 
-[TODO: need more conclusion]
+\todo{need more conclusion}
 
 \subsection{Future Work}
 
-[TODO: rewrite]
+\todo{rewrite}
 
 One clear choice would be to try introducing rhythmic concepts that this grammar cannot currently express. These include ties, rests, and triple (3/4) meter. The former two items suggest the introduction of more alphabet symbols: a Tied symbol, produced from a Beat or Short, could be interpreted as tied over from the previous note during playback. A Rest symbol could be similarly used to eliminate some articulated notes from the interpreted string. Adding compatibility for triple meter would imply reworking Dotted as a nonterminal symbol.
 
 Another concept that seems to be missing from the current alphabet is that of an embellishment or ornamentation. Such symbols could add short note values before or after more metrically significant beats, and in so doing introduce a third level of metrical hierarchy. A separate way to approach this would be by allowing existing let-in structures in the string to be resolved during or between iterations, rather than at the end of the entire cycle. This would preserve high-level symmetry while allowing for small-scale variations.
 
-With certain adaptations, the proposed grammar could generate rhythms in more contemporary styles: for instance, the composition of mixed-meter passages would require a reworking of the first, Measure-based production phase, and might be better generated additively as opposed to recursively. The grammar already supports the complex and nested tuplets which are often found in classical music of the 20th and 21st centuries, and by slackening the imposed constraint on constant total string duration, it might also be able to generate passages in free meter or “non-geometric” time.
+With certain adaptations, the proposed grammar could generate rhythms in more contemporary styles: for instance, the composition of mixed-meter passages would require a reworking of the first, Measure-based production phase, and might be better generated additively as opposed to recursively. The grammar already supports the complex and nested tuplets which are often found in classical music of the 20th and 21st centuries, and by slackening the imposed constraint on constant total string duration, it might also be able to generate passages in free meter or ?non-geometric? time.
 
-Another direction to explore is context sensitivity. In some cases, it might be helpful to know certain contextual details about a symbol such as: (1) its position within the measure, which typically determines its emphasis (downbeat vs. upbeat), (2) its position within the overall duration of the passage, and (3) whether the passage is increasing or decreasing in rhythmic activity. Otherwise, it is not possible to account for what Schoenberg termed “the tendency of the smallest notes” [10]—a contrapuntal phenomenon wherein shorter durations are used more frequently toward the end of a passage or phrase—without adding other constraints to the rule set.
+Another direction to explore is context sensitivity. In some cases, it might be helpful to know certain contextual details about a symbol such as: (1) its position within the measure, which typically determines its emphasis (downbeat vs. upbeat), (2) its position within the overall duration of the passage, and (3) whether the passage is increasing or decreasing in rhythmic activity. Otherwise, it is not possible to account for what Schoenberg termed ?the tendency of the smallest notes? [10]?a contrapuntal phenomenon wherein shorter durations are used more frequently toward the end of a passage or phrase?without adding other constraints to the rule set.
 
-Finally, these variations and improvements could also be useful for interfacing my grammar with other automated composition algorithms that produce melodies, harmonies, and counterpoint, either by using its output as a blueprint or by including it in a “composition by committee” approach. In that case, it would be important to embed as much contextual and functional knowledge as possible into the alphabet and the symbol parameters so that other grammars and algorithms can make informed decisions. For example, the knowledge that a downbeat is tied over or that two halves of a phrase have some rhythmic symmetry could be interpreted by a harmonic composition algorithm to produce more contextually aware chord sequences.
+Finally, these variations and improvements could also be useful for interfacing my grammar with other automated composition algorithms that produce melodies, harmonies, and counterpoint, either by using its output as a blueprint or by including it in a ?composition by committee? approach. In that case, it would be important to embed as much contextual and functional knowledge as possible into the alphabet and the symbol parameters so that other grammars and algorithms can make informed decisions. For example, the knowledge that a downbeat is tied over or that two halves of a phrase have some rhythmic symmetry could be interpreted by a harmonic composition algorithm to produce more contextually aware chord sequences.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here

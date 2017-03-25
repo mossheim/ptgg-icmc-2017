@@ -1,3 +1,5 @@
+fullGen 121 8 0.33 True 3
+
 > module PTGG_Rhythm where
 > import Euterpea
 > import Kulitta.PTGG
@@ -179,8 +181,8 @@ Rules for rhythmic subdivision.
 >   (Beat, 0.3) :-> \p -> [NT (Beat, p)],
 >      --half and half
 >   (Beat, 0.1) :-> \p -> subdivide p [2,1,1],
->   (Beat, 0.15) :-> \p -> subdivide p [1,1],
->   --(Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
+>   (Beat, 0.1) :-> \p -> subdivide p [1,1],
+>   (Beat, 0.05) :-> \p -> subdivide p [1,1,1,1],
 >   --(Beat, 0.15) :-> \p -> subdivide p [1,3,1],
 >   --(Beat, 0.15) :-> \p -> subdivide p [1,2,2,1],
 >   --(Beat, 0.15) :-> \p -> subdivide p [3,2],
@@ -190,7 +192,7 @@ Rules for rhythmic subdivision.
 >   --half, quarter, quarter
 >   --(Beat, 0.1) :-> \p -> subdivide p [1,1],
 >   --syncopation
->   (Beat, 0.05) :-> \p -> subdivide p [1,2,1],
+>   --(Beat, 0.05) :-> \p -> subdivide p [1,2,1],
 >   (Beat, 0.05) :-> \p -> subdivide p [1,1,1],
 >   --(Beat, 0.1) :-> \p -> subdivide p [2,1],
 >   --(Beat, 0.1) :-> \p -> subdivide p [2,2,1],
@@ -212,8 +214,8 @@ Rules for rhythmic subdivision.
 >   ] ++ if useLets then letRules else []) where
 >       letRules = [
 >           --let rules are [x=1,x=1], [x=1,2,x=1], [x=1,x=1,x=1] ~ symmetric halves, thirds, and syncopation with symmetric bookends
->           (Beat, 0.15) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
->           (Beat, 0.15) :-> \p -> [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [NT (shortIfMaxed 1 p, half p), Var "x", Var "x"]]
+>           (Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x"]],
+>           (Beat, 0.1) :-> \p -> [Let "x" [NT(shortIfMaxed 2 p, quarter p)] [NT (shortIfMaxed 1 p, half p), Var "x", Var "x"]]
 >           --(Dotted, 1.0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [NT (shortIfMaxed 1 p, half p), Var "x", Var "x"]], -- subdivide [1,x,x]
 >           --(Dotted, 1.0) :-> \p -> [Let "x" [NT(shortIfMaxed 1 p, half p)] [Var "x", Var "x", Var "x"]] -- subdivide [x,x,x]
 >           --(Beat, 0.1) :-> \p -> if toMaxPow p < 2 then [NT (Beat, p)] else
