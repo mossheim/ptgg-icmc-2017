@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  24 MAR 2017 21:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  29 MAR 2017 22:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -302,16 +302,10 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 130.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 130.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 130.
 
+LaTeX Warning: No \author given.
 
-(/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
 LaTeX Font Info:    Try loading font information for OMS+ptm on input line 130.
-
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
@@ -320,187 +314,315 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/it' in size <8> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 130.
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <8> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 130.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 132.
 
-Overfull \hbox (2.99637pt too wide) in paragraph at lines 136--137
-[]\OT1/ptm/m/it/10 We present an ap-proach for gen-er-at-ing pas-sages of rhyth
-m
- []
-
-
-Overfull \hbox (2.08443pt too wide) in paragraph at lines 136--137
+Overfull \hbox (2.08443pt too wide) in paragraph at lines 133--134
 \OT1/ptm/m/it/10 rule sets that op-er-ate via re-cur-sive sub-di-vi-sion. This 
 project
  []
 
 
-Overfull \hbox (3.23616pt too wide) in paragraph at lines 136--137
-\OT1/ptm/m/it/10 that such an ap-proach, hav-ing al-ready pro-duced com-pelling
-
- []
-
-
-Overfull \hbox (9.05486pt too wide) in paragraph at lines 143--144
+Overfull \hbox (9.05486pt too wide) in paragraph at lines 140--141
 \OT1/ptm/m/n/10 and gen-er-at-ing pitch-related fea-tures in mu-sic such as mel
 ody
  []
 
 
-Overfull \hbox (1.34581pt too wide) in paragraph at lines 151--152
+Overfull \hbox (1.34581pt too wide) in paragraph at lines 148--149
 \OT1/ptm/m/n/10 ex-ten-sion known as Markov con-straints [[]] to achieve prop-
  []
 
 
-LaTeX Warning: Citation `temperley2010' on page 1 undefined on input line 153.
+LaTeX Warning: Citation `temperley2010' on page 1 undefined on input line 150.
+
+
+Overfull \hbox (4.67458pt too wide) in paragraph at lines 152--154
+\OT1/ptm/m/n/10 of this, we feel that gram-mat-i-cal ap-proaches are bet-ter su
+ited
+ []
+
+
+Overfull \hbox (11.14513pt too wide) in paragraph at lines 152--154
+\OT1/ptm/m/n/10 to mod-el-ing rhythm and met-ri-cal struc-ture than purely Mark
+o-
+ []
+
+
+Overfull \hbox (3.86482pt too wide) in paragraph at lines 159--160
+\OT1/ptm/m/n/10 are es-sen-tially pa-ram-e-ter-ized PCFG, where pro-duc-tion ru
+les
+ []
 
 [1{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 
 ]
-Overfull \hbox (3.86482pt too wide) in paragraph at lines 163--164
-\OT1/ptm/m/n/10 are es-sen-tially pa-ram-e-ter-ized PCFG, where pro-duc-tion ru
-les
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 168--174
+Underfull \hbox (badness 10000) in paragraph at lines 166--172
 
  []
 
 
-LaTeX Warning: Citation `[TO-DO]' on page 2 undefined on input line 185.
+LaTeX Warning: Citation `fux_et_al' on page 2 undefined on input line 183.
 
 
-Overfull \hbox (1.62526pt too wide) in paragraph at lines 185--186
+LaTeX Warning: Citation `schoenberg' on page 2 undefined on input line 183.
+
+
+Overfull \hbox (1.62526pt too wide) in paragraph at lines 183--184
 \OT1/ptm/m/n/10 that many the-o-ries of West-ern coun-ter-point, in-clud-ing th
 ose
  []
 
 
-Overfull \hbox (3.84456pt too wide) in paragraph at lines 189--190
+Overfull \hbox (3.84456pt too wide) in paragraph at lines 187--188
 \OT1/ptm/m/n/10 which sub-di-vides an ini-tial du-ra-tion into smaller and smal
 ler
  []
 
 
-Overfull \hbox (1.52408pt too wide) in paragraph at lines 195--196
+Overfull \hbox (1.52408pt too wide) in paragraph at lines 193--194
 \OT1/ptm/m/n/10 The non-ter-mi-nals of the gram-mar are $\OML/cmm/m/it/10 N \OT
 1/cmr/m/n/10 = \OMS/cmsy/m/n/10 f\OML/cmm/m/it/10 Beat; Dotted;
  []
 
 
-Overfull \hbox (0.74597pt too wide) in paragraph at lines 198--199
+Overfull \hbox (0.74597pt too wide) in paragraph at lines 196--197
 \OT1/ptm/m/n/10 posers such as George Crumb have in-vented their own sym-
  []
 
 
-Overfull \hbox (1.50584pt too wide) in paragraph at lines 204--205
+Overfull \hbox (1.50584pt too wide) in paragraph at lines 202--203
 []\OT1/ptm/m/it/10 Measures \OT1/ptm/m/n/10 rep-re-sents a nonzero length of co
 n-sec-u-tive mea-
  []
 
 
-Overfull \hbox (14.43044pt too wide) in paragraph at lines 224--225
+LaTeX Warning: Reference `4_4rules' on page 2 undefined on input line 220.
+
+
+Overfull \hbox (14.43044pt too wide) in paragraph at lines 219--223
 \OT1/ptm/m/n/10 a se-quence of sym-bols from $\OMS/cmsy/m/n/10 f\OML/cmm/m/it/1
 0 Beat; Dotted; QuarterDotted;
  []
 
-[2]
-Overfull \hbox (4.7247pt too wide) in paragraph at lines 226--227
+
+Overfull \hbox (4.7247pt too wide) in paragraph at lines 224--225
 \OT1/ptm/m/n/10 parametrized set $\OMS/cmsy/m/n/10 f\OML/cmm/m/it/10 Beat; Dott
 ed; QuarterDotted; Short\OMS/cmsy/m/n/10 g$\OT1/ptm/m/n/10 .
  []
 
+[2]
+Overfull \hbox (1.86443pt too wide) in paragraph at lines 278--279
+\OT1/ptm/m/n/10 na-ture, this step will typ-i-cally only con-sist of one rule $
+\OML/cmm/m/it/10 M \OMS/cmsy/m/n/10 !
+ []
 
-Overfull \hbox (5.6645pt too wide) in paragraph at lines 290--291
-\OT1/ptm/m/n/10 strat-ing ma-jor fea-tures of the gram-mar im-ple-men-ta-tion. 
-Sec-
+<./figures/4_4_new.pdf, id=110, 557.88094pt x 92.49275pt>
+File: ./figures/4_4_new.pdf Graphic file (type pdf)
+
+<use ./figures/4_4_new.pdf>
+Package pdftex.def Info: ./figures/4_4_new.pdf used on input line 300.
+(pdftex.def)             Requested size: 455.24408pt x 75.47618pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 301.
+
+
+LaTeX Warning: Reference `example_4_4' on page 3 undefined on input line 312.
+
+
+LaTeX Warning: Reference `example_4_4' on page 3 undefined on input line 312.
+
+
+LaTeX Warning: Reference `example_4_4' on page 3 undefined on input line 328.
+
+
+LaTeX Warning: Reference `example_4_4' on page 3 undefined on input line 331.
+
+
+LaTeX Warning: Reference `4_4rules_phases123' on page 3 undefined on input line
+ 331.
+
+
+LaTeX Warning: Reference `4_4rules' on page 3 undefined on input line 331.
+
+
+LaTeX Warning: Reference `4_4rules' on page 3 undefined on input line 331.
+
+[3]
+
+LaTeX Warning: Reference `example_4_4' on page 4 undefined on input line 333.
+
+<./figures/3_4_new.pdf, id=120, 503.57115pt x 44.76373pt>
+File: ./figures/3_4_new.pdf Graphic file (type pdf)
+
+<use ./figures/3_4_new.pdf>
+Package pdftex.def Info: ./figures/3_4_new.pdf used on input line 339.
+(pdftex.def)             Requested size: 455.24408pt x 40.46797pt.
+
+
+LaTeX Warning: Reference `example_3_4' on page 4 undefined on input line 351.
+
+
+LaTeX Warning: Reference `example_3_4' on page 4 undefined on input line 351.
+
+
+LaTeX Warning: Reference `example_3_4' on page 4 undefined on input line 354.
+
+
+LaTeX Warning: Reference `3_4rules_phases23' on page 4 undefined on input line 
+354.
+
+<./figures/complex.pdf, id=121, 553.46783pt x 117.88121pt>
+File: ./figures/complex.pdf Graphic file (type pdf)
+
+<use ./figures/complex.pdf>
+Package pdftex.def Info: ./figures/complex.pdf used on input line 360.
+(pdftex.def)             Requested size: 455.24408pt x 96.9654pt.
+
+
+LaTeX Warning: Reference `complex_rules_phases23' on page 4 undefined on input 
+line 361.
+
+
+LaTeX Warning: Reference `complex_rules_phases23' on page 4 undefined on input 
+line 361.
+
+
+LaTeX Warning: Reference `exmample_complex' on page 4 undefined on input line 3
+77.
+
+
+LaTeX Warning: Reference `exmample_complex' on page 4 undefined on input line 3
+77.
+
+
+LaTeX Warning: Reference `example_complex' on page 4 undefined on input line 38
+0.
+
+
+LaTeX Warning: Reference `complex_rules_phases23' on page 4 undefined on input 
+line 380.
+
+
+LaTeX Warning: Reference `example_complex' on page 4 undefined on input line 38
+0.
+
+
+LaTeX Warning: Reference `example_3_4' on page 4 undefined on input line 382.
+
+
+Overfull \hbox (8.19533pt too wide) in paragraph at lines 382--383
+\OT1/ptm/m/n/10 rent model has no way to ad-dress this po-ten-tial for monotony
+:
  []
 
 
-LaTeX Warning: Citation `kulitta_learning' on page 3 undefined on input line 30
-1.
+LaTeX Warning: Citation `kulitta_learning' on page 4 undefined on input line 38
+8.
 
 
-LaTeX Warning: Citation `lari1990' on page 3 undefined on input line 301.
+LaTeX Warning: Citation `lari1990' on page 4 undefined on input line 388.
 
 
-Overfull \hbox (5.4354pt too wide) in paragraph at lines 303--304
+Overfull \hbox (5.4354pt too wide) in paragraph at lines 390--391
 []\OT1/ptm/m/n/10 Kulitta's pro-duc-tion prob-a-bil-ity learning-strategy is or
 acle-
  []
 
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 322.
-<bach_output.pdf, id=113, 576.76936pt x 98.38647pt>
-File: bach_output.pdf Graphic file (type pdf)
- <use bach_output.pdf>
-Package pdftex.def Info: bach_output.pdf used on input line 327.
+[4 <./figures/4_4_new.pdf>]
+<./figures/bach_output.pdf, id=150, 576.76936pt x 98.38647pt>
+File: ./figures/bach_output.pdf Graphic file (type pdf)
+
+<use ./figures/bach_output.pdf>
+Package pdftex.def Info: ./figures/bach_output.pdf used on input line 414.
 (pdftex.def)             Requested size: 455.24408pt x 77.6584pt.
 
-Overfull \hbox (1.29517pt too wide) in paragraph at lines 341--342
+Overfull \hbox (1.29517pt too wide) in paragraph at lines 428--429
 \OT1/ptm/m/n/10 au-to-mated com-po-si-tion along the sole pa-ram-e-ter of rhyth
-m.
- []
-
-[3]
-Overfull \hbox (0.50505pt too wide) in paragraph at lines 349--350
-\OT1/ptm/m/n/10 con-cepts that this gram-mar can-not cur-rently ex-press. These
-
+m,
  []
 
 
-Overfull \hbox (3.84494pt too wide) in paragraph at lines 353--354
-\OT1/ptm/m/n/10 gen-er-ate rhythms in more con-tem-po-rary styles: for in-stanc
-e,
+Overfull \hbox (3.33495pt too wide) in paragraph at lines 428--429
+\OT1/ptm/m/n/10 in-clud-ing the im-ple-men-ta-tion of sev-eral ex-am-ple gram-m
+ars.
  []
 
-(./ptgg_rhythms.bbl [4 <./bach_output.pdf>])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 363.
- [5
 
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 363.
+Overfull \hbox (0.51479pt too wide) in paragraph at lines 428--429
+\OT1/ptm/m/n/10 These gram-mars sup-port mul-ti-ple time sig-na-tures and com-
+ []
+
+
+Overfull \hbox (2.24463pt too wide) in paragraph at lines 437--438
+\OT1/ptm/m/n/10 rent al-pha-bet is that of ac-cents, em-bel-lish-ments and/or o
+ther
+ []
+
+
+LaTeX Warning: Citation `schoenberg' on page 5 undefined on input line 442.
+
+(./ptgg_rhythms.bbl [5 <./figures/3_4_new.pdf> <./figures/complex.pdf>])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 450.
+
+[6
+
+ <./figures/bach_output.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 450.
  (./ptgg_rhythms.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 363.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 363.
-Package rerunfilecheck Info: File `ptgg_rhythms.out' has not changed.
-(rerunfilecheck)             Checksum: 898C2E6C23D6779C25F8F6AB6932C9C5;952.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 450.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 450.
 
+
+Package rerunfilecheck Warning: File `ptgg_rhythms.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `ptgg_rhythms.out':
+(rerunfilecheck)             Before: 898C2E6C23D6779C25F8F6AB6932C9C5;952
+(rerunfilecheck)             After:  7F069D26516A9431136ABCAC6EEDC838;903.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 363.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 450.
  ) 
 Here is how much of TeX's memory you used:
- 5986 strings out of 493014
- 88030 string characters out of 6133351
- 191322 words of memory out of 5000000
- 9422 multiletter control sequences out of 15000+600000
- 18346 words of font info for 41 fonts, out of 8000000 for 9000
+ 5984 strings out of 493014
+ 88119 string characters out of 6133351
+ 191130 words of memory out of 5000000
+ 9413 multiletter control sequences out of 15000+600000
+ 17831 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,14n,30p,1265b,460s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
-exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
-xlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
-live/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texli
-ve/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive
-/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2
-016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2016
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf
--dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-d
-ist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2016/tex
-mf-dist/fonts/type1/public/tex-gyre/qcsr.pfb></usr/local/texlive/2016/texmf-dis
-t/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/
-type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/
-times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr
-i8a.pfb>
-Output written on ptgg_rhythms.pdf (5 pages, 316875 bytes).
+ 29i,11n,30p,1214b,458s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{subsection.6.1} has been referenced but does not 
+exist, replaced by a fixed one
+
+{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
+live/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texl
+ive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texli
+ve/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive
+/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2
+016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/201
+6/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2016/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-dis
+t/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2016/texmf
+-dist/fonts/type1/public/tex-gyre/qcsr.pfb></usr/local/texlive/2016/texmf-dist/
+fonts/type1/public/tex-gyre/qcsri.pfb></usr/local/texlive/2016/texmf-dist/fonts
+/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw
+/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utm
+ri8a.pfb>
+Output written on ptgg_rhythms.pdf (6 pages, 490342 bytes).
 PDF statistics:
- 210 PDF objects out of 1000 (max. 8388607)
- 181 compressed objects within 2 object streams
- 35 named destinations out of 1000 (max. 500000)
- 126 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 280 PDF objects out of 1000 (max. 8388607)
+ 238 compressed objects within 3 object streams
+ 43 named destinations out of 1000 (max. 500000)
+ 141 words of extra memory for PDF output out of 10000 (max. 10000000)
 

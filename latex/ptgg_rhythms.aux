@@ -27,6 +27,8 @@
 \citation{pachet2011}
 \citation{gttm}
 \citation{temperley2010}
+\citation{quick2013farm}
+\citation{quick_thesis}
 \select@language{english}
 \@writefile{toc}{\select@language{english}}
 \@writefile{lof}{\select@language{english}}
@@ -35,38 +37,51 @@
 \newlabel{sec:introduction}{{1}{1}{Introduction}{section.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1} Related Work}{1}{subsection.1.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2} Probabilistic Temporal Graph Grammars}{1}{subsection.1.2}}
-\citation{quick2013farm}
-\citation{quick_thesis}
-\citation{[TO-DO]}
+\citation{fux_et_al}
+\citation{schoenberg}
 \@writefile{toc}{\contentsline {section}{\numberline {2.} A PTGG for Rhythm}{2}{section.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1} Nonterminals}{2}{subsection.2.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2} Terminals}{2}{subsection.2.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3} Production Phases}{2}{subsection.2.3}}
 \citation{euterpea}
-\citation{kulitta_learning}
-\citation{lari1990}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4} Production Rules}{3}{subsection.2.4}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.} Implementation}{3}{section.3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1} Four-Phase Generation Algorithm}{3}{subsection.3.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Rules, along with their corresponding probabilities, used in Phases 1, 2 \& 3 to generate Figure \ref  {example_4_4}}}{3}{table.1}}
+\newlabel{4_4rules_phases123}{{1}{3}{Rules, along with their corresponding probabilities, used in Phases 1, 2 \& 3 to generate Figure \ref {example_4_4}}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Phase 4 rule set used to generate Figure \ref  {example_4_4}.}}{3}{table.2}}
+\newlabel{4_4rules}{{2}{3}{Phase 4 rule set used to generate Figure \ref {example_4_4}}{table.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.} Examples}{3}{section.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.} Learning Production Probabilities}{3}{section.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.} Conclusion}{3}{section.6}}
+\citation{kulitta_learning}
+\citation{lari1990}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces A generated passage of eight measures of 4/4, with an extra whole note measure added for finality.}}{4}{figure.1}}
+\newlabel{example_4_4}{{1}{4}{A generated passage of eight measures of 4/4, with an extra whole note measure added for finality}{figure.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Rules used for Phases 2 and 3 to generate Figure \ref  {example_3_4}. Rule sets for other phases are omitted here for the sake of brevity.}}{4}{table.3}}
+\newlabel{3_4rules_phases23}{{3}{4}{Rules used for Phases 2 and 3 to generate Figure \ref {example_3_4}. Rule sets for other phases are omitted here for the sake of brevity}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Rule used for Phases 2 and 3 to generate figure \ref  {exmample_complex}. The rule set for Phase 4 has been omitted for the sake of brevity.}}{4}{table.4}}
+\newlabel{complex_rules_phases23}{{4}{4}{Rule used for Phases 2 and 3 to generate figure \ref {exmample_complex}. The rule set for Phase 4 has been omitted for the sake of brevity}{table.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.} Learning Production Probabilities}{4}{section.5}}
+\citation{schoenberg}
 \bibdata{musicbib3}
 \bibcite{chordia2011}{1}
 \bibcite{gillick2009}{2}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces A generated passage of 3/4. Note the repetition of measures 1 and 2, a result of variable instantiation during Phase 1 of generation.}}{5}{figure.2}}
+\newlabel{example_3_4}{{2}{5}{A generated passage of 3/4. Note the repetition of measures 1 and 2, a result of variable instantiation during Phase 1 of generation}{figure.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces A brief passage demonstrating the ability of this framework to easily generate rhythms in multiple time signatures with complex beat subdivisions. A partial rule set is given in Table \ref  {complex_rules_phases23}}}{5}{figure.3}}
+\newlabel{example_complex}{{3}{5}{A brief passage demonstrating the ability of this framework to easily generate rhythms in multiple time signatures with complex beat subdivisions. A partial rule set is given in Table \ref {complex_rules_phases23}}{figure.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Rule set with probabilities derived from training on examples of rhythms from Bach cantatas.}}{5}{table.5}}
+\newlabel{simplerules}{{5}{5}{Rule set with probabilities derived from training on examples of rhythms from Bach cantatas}{table.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.} Conclusion and Future Work}{5}{section.6}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.} References}{5}{section.7}}
 \bibcite{yi}{3}
 \bibcite{pachet}{4}
 \bibcite{ron}{5}
 \bibcite{buhlmann}{6}
 \bibcite{roy2013}{7}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Examples of rhythms generated from the grammar in Table \ref  {simplerules}, the probabilities for which were derived from a small number of Bach cantata excerpts.}}{4}{figure.1}}
-\newlabel{learninggen}{{1}{4}{Examples of rhythms generated from the grammar in Table \ref {simplerules}, the probabilities for which were derived from a small number of Bach cantata excerpts}{figure.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Rule set with probabilities derived from training on examples of rhythms from Bach cantatas.}}{4}{table.1}}
-\newlabel{simplerules}{{1}{4}{Rule set with probabilities derived from training on examples of rhythms from Bach cantatas}{table.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1} Future Work}{4}{subsection.6.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.} References}{4}{section.7}}
 \bibcite{pachet2011}{8}
 \bibcite{gttm}{9}
 \bibcite{quick2013farm}{10}
 \bibcite{quick_thesis}{11}
 \bibcite{euterpea}{12}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Examples of rhythms generated from the grammar in Table \ref  {simplerules}, the probabilities for which were derived from a small number of Bach cantata excerpts.}}{6}{figure.4}}
+\newlabel{learninggen}{{4}{6}{Examples of rhythms generated from the grammar in Table \ref {simplerules}, the probabilities for which were derived from a small number of Bach cantata excerpts}{figure.4}{}}
